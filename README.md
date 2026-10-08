@@ -59,7 +59,9 @@ npm run build
 
 脚本按照片逐张处理，每张生成长边不超过 480、960、1600、2800 像素的 WebP，不放大原图。保持方向与比例、转为 sRGB、移除 EXIF（含 GPS），原片不变。缩略图按屏幕宽度加载，大图仅点击时获取。RAW/HEIC 请先导出 JPEG 或 TIFF。
 
-说明写入与原图同名的 JSON；可先不填写，此时标题使用文件名。例：`mountain.jpg` 与 `mountain.json`，格式见 `docs/photo-metadata.example.json`。文件名最好简短清楚，内部图片目录自动使用稳定 ID。
+将一张照片的说明 JSON 中 `homepage` 设为 `true`，即可作为首页个人照片（最多一张）。首页保留完整构图；摄影页支持点击看大图。
+
+说明写入与原图同名的 JSON；可先不填写，内部作品名称使用文件名；网页不显示作品标题。例：`mountain.jpg` 与 `mountain.json`，格式见 `docs/photo-metadata.example.json`。文件名最好简短清楚，内部图片目录自动使用稳定 ID。
 
 把 `published` 设为 `false` 或移出 `incoming/photos/` 后重新处理，即从当前图库删除。历史 Git 提交里的已发布图片仍可能存在。只把你决定公开的照片加入这里。
 

@@ -71,6 +71,7 @@ for (const [index, file] of files.entries()) {
   );
   records.push({
     id,
+    homepage: metadata.homepage === true,
     title: bilingual(metadata.title, stem),
     description: bilingual(metadata.description),
     location: bilingual(metadata.location),
@@ -87,6 +88,9 @@ for (const [index, file] of files.entries()) {
     `[${index + 1}/${files.length}] ${file.name} | ${(originalBytes / 1048576).toFixed(1)} MB → ${(largeBytes / 1024).toFixed(0)} KB`,
   );
 }
+if (records.filter((photo) => photo.homepage).length > 1)
+  throw new Error('Choose only one homepage photograph in the photo metadata.');
+
 // Commit the complete gallery atomically; do not replace it after a failed import.
 const { writeFile } = await import('node:fs/promises');
 await writeFile(`${manifest}.part`, JSON.stringify(records, null, 2) + '\n');

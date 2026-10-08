@@ -1521,3 +1521,54 @@ html[lang='zh-CN'] .gallery-empty h2 {
     transition: none !important;
   }
 }
+
+/* Personal photograph: retain the complete portrait composition on every screen. */
+.hero-portrait {
+  width: min(100%, 400px);
+  justify-self: end;
+  align-self: center;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface-soft);
+}
+.hero-portrait > a {
+  display: block;
+}
+.hero-portrait img {
+  width: 100%;
+  height: auto;
+}
+.teaser-photo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-width: 0;
+  padding: 16px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+.teaser-photo img {
+  width: auto;
+  max-width: 100%;
+  height: 260px;
+  object-fit: contain;
+}
+@media (max-width: 680px) {
+  .hero-portrait {
+    justify-self: center;
+  }
+}
+
+.photo-gallery-single {
+  columns: 1;
+  max-width: 680px;
+}
+
+html[lang='zh-CN'] .page-heading h1 {
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}

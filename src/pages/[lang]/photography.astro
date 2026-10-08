@@ -16,9 +16,12 @@ const t = text[lang];
     <p>{t.photoIntro}</p>
   </section>
   {photos.length > 0 ? (
-    <section class="container photo-gallery" aria-label={t.photography}>
+    <section
+      class:list={['container', 'photo-gallery', { 'photo-gallery-single': photos.length === 1 }]}
+      aria-label={t.photography}
+    >
       {photos.map((photo, index) => (
-        <figure class="photo-card">
+        <figure class="photo-card" id={`photo-${photo.id}`}>
           <button
             class="photo-open"
             data-photo-index={index}
@@ -38,10 +41,6 @@ const t = text[lang];
               decoding="async"
             />
           </button>
-          <figcaption>
-            <h2>{photo.title[lang]}</h2>
-            <p>{[photo.location[lang], photo.album[lang]].filter(Boolean).join(' · ')}</p>
-          </figcaption>
         </figure>
       ))}
     </section>
@@ -91,7 +90,7 @@ const t = text[lang];
             ‹
           </button>
           <div>
-            <h2 id="photo-title"></h2>
+            <h2 id="photo-title" hidden></h2>
             <p id="photo-caption"></p>
           </div>
           <button class="icon-button" id="photo-next" aria-label={t.next}>
@@ -119,11 +118,7 @@ const t = text[lang];
       const photo = photos[current];
       document.querySelector('#photo-position')!.textContent = `${current + 1} / ${photos.length}`;
       document.querySelector('#photo-title')!.textContent = photo.title[lang];
-      document.querySelector('#photo-caption')!.textContent = [
-        photo.location[lang],
-        photo.date,
-        photo.description[lang],
-      ]
+      document.querySelector('#photo-caption')!.textContent = [photo.location[lang], photo.date]
         .filter(Boolean)
         .join(' · ');
       image.alt = photo.description[lang] || photo.title[lang];

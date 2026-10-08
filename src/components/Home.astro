@@ -4,8 +4,11 @@ import SurveyGraphic from './SurveyGraphic.astro';
 import Publication from './Publication.astro';
 import { text, type Lang } from '../data/i18n';
 import { profile } from '../data/profile';
+import { photos } from '../data/photography';
 const { lang } = Astro.props as { lang: Lang };
 const t = text[lang];
+const portrait = photos.find((photo) => photo.homepage);
+const featuredPhoto = portrait ?? photos[0];
 ---
 
 <Layout lang={lang} page="home">
@@ -34,7 +37,32 @@ const t = text[lang];
         </div>
       </div>
     </div>
-    <SurveyGraphic lang={lang} />
+    {portrait ? (
+      <figure class="hero-portrait">
+        <a
+          href={`/${lang}/photography/#photo-${portrait.id}`}
+          aria-label={
+            lang === 'zh'
+              ? `在摄影板块查看 ${portrait.title.zh}`
+              : `View ${portrait.title.en} in Photography`
+          }
+        >
+          <img
+            src={portrait.thumb}
+            srcset={portrait.sources.map((source) => `${source.src} ${source.width}w`).join(', ')}
+            sizes="(max-width: 680px) min(100vw - 40px, 400px), (max-width: 900px) 42vw, 400px"
+            width={portrait.width}
+            height={portrait.height}
+            alt={portrait.description[lang] || portrait.title[lang]}
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+          />
+        </a>
+      </figure>
+    ) : (
+      <SurveyGraphic lang={lang} />
+    )}
   </section>
   <div class="interest-strip">
     <div class="container interest-inner">
@@ -95,13 +123,32 @@ const t = text[lang];
         {t.gallery}
       </a>
     </div>
-    <div class="teaser-side" aria-hidden="true">
-      <span class="frame-corner top-left"></span>
-      <span class="frame-corner top-right"></span>
-      <span class="frame-corner bottom-left"></span>
-      <span class="frame-corner bottom-right"></span>
-      <span>PHOTOGRAPHY</span>
-      <small>{lang === 'zh' ? '作品正在精选' : 'A COLLECTION IN THE MAKING'}</small>
-    </div>
+    {featuredPhoto ? (
+      <a
+        class="teaser-photo"
+        href={`/${lang}/photography/#photo-${featuredPhoto.id}`}
+        aria-label={
+          lang === 'zh' ? `查看 ${featuredPhoto.title.zh}` : `View ${featuredPhoto.title.en}`
+        }
+      >
+        <img
+          src={featuredPhoto.thumb}
+          width={featuredPhoto.width}
+          height={featuredPhoto.height}
+          alt={featuredPhoto.title[lang]}
+          loading="lazy"
+          decoding="async"
+        />
+      </a>
+    ) : (
+      <div class="teaser-side" aria-hidden="true">
+        <span class="frame-corner top-left"></span>
+        <span class="frame-corner top-right"></span>
+        <span class="frame-corner bottom-left"></span>
+        <span class="frame-corner bottom-right"></span>
+        <span>PHOTOGRAPHY</span>
+        <small>{lang === 'zh' ? '作品正在精选' : 'A COLLECTION IN THE MAKING'}</small>
+      </div>
+    )}
   </section>
 </Layout>

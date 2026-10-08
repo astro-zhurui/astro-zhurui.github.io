@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import photos from '../src/data/photos.json' with { type: 'json' };
 
 test('all bilingual pages render without horizontal overflow or browser errors', async ({
   page,
@@ -47,7 +48,7 @@ test('language switch preserves route and hash and remembers language', async ({
   expect(await page.evaluate(() => localStorage.getItem('language'))).toBe('en');
 });
 
-test('public paper, real education dates, and honest empty gallery', async ({ page }) => {
+test('public paper, real education dates, and current gallery', async ({ page }) => {
   await page.goto('/en/publications/');
   await expect(page.locator('article.publication')).toHaveCount(1);
   await expect(page.getByRole('link', { name: 'Read the paper' })).toHaveAttribute(
@@ -65,8 +66,13 @@ test('public paper, real education dates, and honest empty gallery', async ({ pa
   await expect(page.locator('body')).toContainText('2026.07');
   await expect(page.locator('body')).not.toContainText('下载简历');
   await page.goto('/zh/photography/');
-  await expect(page.locator('body')).toContainText('作品，正在精选。');
-  await expect(page.locator('.photo-open')).toHaveCount(0);
+  await expect(page.locator('.photo-open')).toHaveCount(photos.length);
+  if (photos.length) {
+    await expect(page.locator('.photo-card img')).toHaveCount(photos.length);
+    await expect(page.locator('.gallery-empty')).toHaveCount(0);
+  } else {
+    await expect(page.locator('body')).toContainText('作品，正在精选。');
+  }
 });
 
 test('mobile navigation opens, escape closes, and links work', async ({ page }, testInfo) => {
@@ -132,4 +138,42 @@ test('main pages meet automated accessibility checks', async ({ page }) => {
       .analyze();
     expect(result.violations, route).toEqual([]);
   }
+});
+
+test('homepage portrait retains its composition and opens in the gallery', async ({ page }) => {
+  const portrait = photos.find((photo) => photo.homepage);
+  test.skip(!portrait, 'No homepage photograph configured');
+  await page.goto('/zh/');
+  const image = page.locator('.hero-portrait img');
+  await expect(image).toBeVisible();
+  await expect
+    .poll(() => image.evaluate((img) => (img as HTMLImageElement).naturalWidth))
+    .toBeGreaterThan(0);
+  const dimensions = await image.evaluate((img) => {
+    const element = img as HTMLImageElement;
+    return {
+      rendered: element.clientWidth / element.clientHeight,
+      source: element.naturalWidth / element.naturalHeight,
+    };
+  });
+  expect(Math.abs(dimensions.rendered - dimensions.source)).toBeLessThan(0.01);
+  await page.locator('.hero-portrait a').click();
+  await expect(page).toHaveURL(new RegExp(`/zh/photography/#photo-${portrait!.id}$`));
+  await page.locator(`#photo-${portrait!.id} .photo-open`).click();
+  await expect(page.locator('#lightbox')).toBeVisible();
+  await expect(page.locator('#photo-title')).toHaveText(portrait!.title.zh);
+  await expect(page.locator('#photo-title')).toBeHidden();
+  await expect(page.locator('.photo-card figcaption')).toHaveCount(0);
+  await expect
+    .poll(() =>
+      page.locator('#lightbox-image').evaluate((img) => (img as HTMLImageElement).naturalWidth),
+    )
+    .toBeGreaterThan(0);
+  if (photos.length === 1) {
+    await expect(page.locator('#photo-prev')).toBeDisabled();
+    await expect(page.locator('#photo-next')).toBeDisabled();
+  }
+  await page.keyboard.press('Escape');
+  await expect(page.locator('#lightbox')).toBeHidden();
+  await expect(page.locator(`#photo-${portrait!.id} .photo-open`)).toBeFocused();
 });

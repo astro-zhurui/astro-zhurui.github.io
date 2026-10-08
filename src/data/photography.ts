@@ -1,6 +1,7 @@
 import items from './photos.json';
 export interface Photo {
   id: string;
+  homepage?: boolean;
   title: { en: string; zh: string };
   description: { en: string; zh: string };
   location: { en: string; zh: string };
