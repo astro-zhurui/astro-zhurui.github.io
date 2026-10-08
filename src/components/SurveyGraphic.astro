@@ -1,0 +1,27 @@
+---
+import type { Lang } from '../data/i18n';
+import { samples } from '../data/publications';
+const { lang = 'en' } = Astro.props as { lang?: Lang };
+---
+<figure class="survey-graphic" aria-label={lang === 'zh' ? 'QHSC 四个样本的候选体数量' : 'Candidate counts in the four QHSC samples'}>
+  <div class="graphic-label"><span>QHSC / 2026</span><span>HSC-SSP DR3</span></div>
+  <div class="orbital-chart">
+    <svg viewBox="0 0 460 460" role="img" aria-label={lang === 'zh' ? '四条圆弧分别表示四个样本的数量，以主样本为基准' : 'Four arcs show candidate counts relative to the Master sample'}>
+      <circle class="chart-guide" cx="230" cy="230" r="211" />
+      <path class="chart-guide" d="M230 6v32M230 422v32M6 230h32M422 230h32" />
+      {samples.map((s, index) => {
+        const radius = 179 - index * 28;
+        const circumference = 2 * Math.PI * radius;
+        return <g><circle class="chart-track" cx="230" cy="230" r={radius} /><circle class="chart-arc" cx="230" cy="230" r={radius} stroke={s.color} stroke-dasharray={`${circumference * s.count / samples[0].count} ${circumference}`} transform="rotate(-90 230 230)" /></g>;
+      })}
+      <text x="230" y="216" class="chart-number" text-anchor="middle">1.18M</text>
+      <text x="230" y="246" class="chart-subtitle" text-anchor="middle">MASTER SAMPLE</text>
+    </svg>
+    <span class="axis-label axis-top">MULTIBAND PHOTOMETRY</span>
+    <span class="axis-label axis-bottom">QUASAR CANDIDATES</span>
+  </div>
+  <figcaption>
+    <div class="chart-legend">{samples.map(s => <span><i style={`background:${s.color}`}></i>{s.name}</span>)}</div>
+    <p>{lang === 'zh' ? '圆弧长度表示样本数量；样本相互重叠。' : 'Arc lengths encode sample counts. Samples overlap.'}</p>
+  </figcaption>
+</figure>

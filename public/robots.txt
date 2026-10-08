@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://astro-zhurui.github.io/sitemap.xml

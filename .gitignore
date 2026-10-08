@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.astro/
+incoming/**
+!incoming/photos/
+!incoming/photos/.gitkeep
+!incoming/cv/
+!incoming/cv/.gitkeep
+work/
+test-results/
+playwright-report/
+.DS_Store
+.env*
+!.env.example

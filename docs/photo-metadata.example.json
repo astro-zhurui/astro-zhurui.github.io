@@ -1,0 +1,8 @@
+{
+  "published": true,
+  "title": { "en": "Photo title", "zh": "照片标题" },
+  "description": { "en": "A short description of the photograph.", "zh": "简短描述这张照片。" },
+  "location": { "en": "Location", "zh": "拍摄地点" },
+  "album": { "en": "Selected photographs", "zh": "精选摄影" },
+  "date": "2026-10"
+}
