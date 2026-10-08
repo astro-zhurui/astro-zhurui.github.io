@@ -2,25 +2,69 @@
 import Layout from '../../layouts/Layout.astro';
 import { text, languages, type Lang } from '../../data/i18n';
 import { publications, samples } from '../../data/publications';
-export function getStaticPaths() { return languages.map(lang => ({ params: { lang } })); }
+export function getStaticPaths() {
+  return languages.map((lang) => ({ params: { lang } }));
+}
 const lang = Astro.params.lang as Lang;
 const t = text[lang];
 const p = publications[0];
 ---
+
 <Layout lang={lang} page="research" title={t.research} description={t.researchIntro}>
-  <section class="page-heading container"><p class="eyebrow">01 / {t.research}</p><h1>{t.researchTitle}</h1><p>{t.researchIntro}</p></section>
+  <section class="page-heading container">
+    <p class="eyebrow">01 / {t.research}</p>
+    <h1>{t.researchTitle}</h1>
+    <p>{t.researchIntro}</p>
+  </section>
   <section class="container focus-grid" aria-label={t.researchFocus}>
-    {[{ title: t.focus01, description: t.focusText01 }, { title: t.focus02, description: t.focusText02 }, { title: t.focus03, description: t.focusText03 }].map((item, index) => <article><span class="eyebrow">0{index + 1}</span><h2>{item.title}</h2><p>{item.description}</p></article>)}
+    {[
+      { title: t.focus01, description: t.focusText01 },
+      { title: t.focus02, description: t.focusText02 },
+      { title: t.focus03, description: t.focusText03 },
+    ].map((item, index) => (
+      <article>
+        <span class="eyebrow">0{index + 1}</span>
+        <h2>{item.title}</h2>
+        <p>{item.description}</p>
+      </article>
+    ))}
   </section>
   <section class="section container research-project" id="qhsc">
     <p class="eyebrow">{t.project}</p>
-    <div class="project-heading"><h2>{t.projectTitle}</h2><p>{t.projectText}</p></div>
+    <div class="project-heading">
+      <h2>{t.projectTitle}</h2>
+      <p>{t.projectText}</p>
+    </div>
     <div class="sample-chart">
-      {samples.map(s => <div class="sample-row"><div class="sample-name"><strong>{s.name}</strong><span>{s.bands}</span></div><div class="sample-bar-track"><div style={`width:${s.count / samples[0].count * 100}%;background:${s.color}`}></div></div><span class="sample-count">{s.count.toLocaleString('en-US')}</span></div>)}
+      {samples.map((s) => (
+        <div class="sample-row">
+          <div class="sample-name">
+            <strong>{s.name}</strong>
+            <span>{s.bands}</span>
+          </div>
+          <div class="sample-bar-track">
+            <div style={`width:${(s.count / samples[0].count) * 100}%;background:${s.color}`}></div>
+          </div>
+          <span class="sample-count">{s.count.toLocaleString('en-US')}</span>
+        </div>
+      ))}
     </div>
     <p class="chart-note">{t.sampleNote}</p>
-    <div class="methodology"><h3>{t.methodology}</h3><p>{t.methodText}</p></div>
-    <div class="link-row"><a class="button primary" href={p.url} target="_blank" rel="noopener noreferrer">{t.paper}</a><a class="button" href={p.catalog} target="_blank" rel="noopener noreferrer">{t.data}</a><a class="text-link" href={p.arxiv} target="_blank" rel="noopener noreferrer">{t.preprint}</a></div>
+    <div class="methodology">
+      <h3>{t.methodology}</h3>
+      <p>{t.methodText}</p>
+    </div>
+    <div class="link-row">
+      <a class="button primary" href={p.url} target="_blank" rel="noopener noreferrer">
+        {t.paper}
+      </a>
+      <a class="button" href={p.catalog} target="_blank" rel="noopener noreferrer">
+        {t.data}
+      </a>
+      <a class="text-link" href={p.arxiv} target="_blank" rel="noopener noreferrer">
+        {t.preprint}
+      </a>
+    </div>
     <p class="source-note">{t.source}</p>
   </section>
 </Layout>

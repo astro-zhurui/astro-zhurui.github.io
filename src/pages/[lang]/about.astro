@@ -2,13 +2,57 @@
 import Layout from '../../layouts/Layout.astro';
 import { profile } from '../../data/profile';
 import { text, languages, type Lang } from '../../data/i18n';
-export function getStaticPaths() { return languages.map(lang => ({ params: { lang } })); }
+export function getStaticPaths() {
+  return languages.map((lang) => ({ params: { lang } }));
+}
 const lang = Astro.params.lang as Lang;
 const t = text[lang];
 ---
+
 <Layout lang={lang} page="about" title={t.about}>
-  <section class="page-heading container"><p class="eyebrow">04 / {t.about}</p><h1>{t.aboutTitle}</h1><p>{t.aboutSubtitle}</p></section>
-  <section class="container about-intro"><p class="biography">{profile.biography[lang]}</p><div class="profile-links"><span class="eyebrow">{t.links}</span><a href={profile.orcid} target="_blank" rel="noopener noreferrer">ORCID <span>0000-0002-0792-2353</span></a><a href={profile.github} target="_blank" rel="noopener noreferrer">GitHub <span>astro-zhurui</span></a>{profile.cv[lang] && <a href={profile.cv[lang]!} target="_blank" rel="noopener noreferrer">{t.cv}<span>PDF</span></a>}</div></section>
-  <section class="section container background"><h2>{t.background}</h2><div class="timeline">{profile.experience.map(item => <article><p class="eyebrow">{item.period}</p><div><h3>{item.institution[lang]}</h3><p>{item[lang]}</p><span class="muted">{item.detail[lang]}</span></div></article>)}</div></section>
-  <section class="contact-section container"><p class="eyebrow">{t.contactIntro}</p><h2>{t.contact}</h2><a class="contact-email" href={`mailto:${profile.email}`}>{profile.email}</a></section>
+  <section class="page-heading container">
+    <p class="eyebrow">04 / {t.about}</p>
+    <h1>{t.aboutTitle}</h1>
+    <p>{t.aboutSubtitle}</p>
+  </section>
+  <section class="container about-intro">
+    <p class="biography">{profile.biography[lang]}</p>
+    <div class="profile-links">
+      <span class="eyebrow">{t.links}</span>
+      <a href={profile.orcid} target="_blank" rel="noopener noreferrer">
+        ORCID <span>0000-0002-0792-2353</span>
+      </a>
+      <a href={profile.github} target="_blank" rel="noopener noreferrer">
+        GitHub <span>astro-zhurui</span>
+      </a>
+      {profile.cv[lang] && (
+        <a href={profile.cv[lang]!} target="_blank" rel="noopener noreferrer">
+          {t.cv}
+          <span>PDF</span>
+        </a>
+      )}
+    </div>
+  </section>
+  <section class="section container background">
+    <h2>{t.background}</h2>
+    <div class="timeline">
+      {profile.experience.map((item) => (
+        <article>
+          <p class="eyebrow">{item.period}</p>
+          <div>
+            <h3>{item.institution[lang]}</h3>
+            <p>{item[lang]}</p>
+            <span class="muted">{item.detail[lang]}</span>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+  <section class="contact-section container">
+    <p class="eyebrow">{t.contactIntro}</p>
+    <h2>{t.contact}</h2>
+    <a class="contact-email" href={`mailto:${profile.email}`}>
+      {profile.email}
+    </a>
+  </section>
 </Layout>

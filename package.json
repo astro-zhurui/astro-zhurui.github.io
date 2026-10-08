@@ -13,7 +13,9 @@
     "preview": "ASTRO_TELEMETRY_DISABLED=1 astro preview --host 127.0.0.1",
     "photos": "node scripts/prepare-photos.mjs",
     "test": "playwright test",
-    "test:photos": "node scripts/test-photos.mjs"
+    "test:photos": "node scripts/test-photos.mjs",
+    "format": "prettier --write src scripts tests *.ts *.mjs *.json",
+    "format:check": "prettier --check src scripts tests *.ts *.mjs *.json"
   },
   "dependencies": {
     "@fontsource-variable/manrope": "^5.2.8",
@@ -25,6 +27,8 @@
     "@axe-core/playwright": "^4.13.0",
     "@playwright/test": "latest",
     "@types/node": "^26.6.4",
+    "prettier": "^3.9.9",
+    "prettier-plugin-astro": "^1.1.0",
     "sharp": "latest",
     "typescript": "latest"
   }

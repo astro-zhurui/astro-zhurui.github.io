@@ -4,16 +4,27 @@ import '@fontsource-variable/newsreader';
 import '../styles/global.css';
 import { profile } from '../data/profile';
 import { text, type Lang } from '../data/i18n';
-interface Props { lang: Lang; page: string; title?: string; description?: string; }
+interface Props {
+  lang: Lang;
+  page: string;
+  title?: string;
+  description?: string;
+}
 const { lang, page, title, description } = Astro.props;
 const t = text[lang];
-const section = (page === 'home' || page === '404') ? '' : `${page}/`;
-const canonical = page === '404' ? 'https://astro-zhurui.github.io/404.html' : `https://astro-zhurui.github.io/${lang}/${section}`;
+const section = page === 'home' || page === '404' ? '' : `${page}/`;
+const canonical =
+  page === '404'
+    ? 'https://astro-zhurui.github.io/404.html'
+    : `https://astro-zhurui.github.io/${lang}/${section}`;
 const nav = ['home', 'research', 'publications', 'photography', 'about'] as const;
 const otherLang = lang === 'en' ? 'zh' : 'en';
 const name = lang === 'en' ? 'Rui Zhu' : '朱睿';
-const pageTitle = title ? `${title} · ${name}` : `${name} · ${lang === 'en' ? 'Astronomy & Photography' : '天文学与摄影'}`;
+const pageTitle = title
+  ? `${title} · ${name}`
+  : `${name} · ${lang === 'en' ? 'Astronomy & Photography' : '天文学与摄影'}`;
 ---
+
 <!doctype html>
 <html lang={lang === 'zh' ? 'zh-CN' : 'en'}>
   <head>
@@ -28,7 +39,11 @@ const pageTitle = title ? `${title} · ${name}` : `${name} · ${lang === 'en' ? 
     <link rel="canonical" href={canonical} />
     <link rel="alternate" hreflang="en" href={`https://astro-zhurui.github.io/en/${section}`} />
     <link rel="alternate" hreflang="zh-CN" href={`https://astro-zhurui.github.io/zh/${section}`} />
-    <link rel="alternate" hreflang="x-default" href={`https://astro-zhurui.github.io/en/${section}`} />
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href={`https://astro-zhurui.github.io/en/${section}`}
+    />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description ?? profile.biography[lang]} />
@@ -37,41 +52,105 @@ const pageTitle = title ? `${title} · ${name}` : `${name} · ${lang === 'en' ? 
     <script is:inline>
       // Respect an explicit URL. Only the root uses the remembered language.
       try {
-        if (location.pathname === '/' && localStorage.getItem('language') === 'zh') location.replace('/zh/' + location.hash);
-      } catch { /* Language links work even when storage is disabled. */ }
+        if (location.pathname === '/' && localStorage.getItem('language') === 'zh')
+          location.replace('/zh/' + location.hash);
+      } catch {
+        /* Language links work even when storage is disabled. */
+      }
     </script>
   </head>
   <body data-language={lang} data-page={page}>
-    <a class="skip-link" href="#main">{t.skip}</a>
+    <a class="skip-link" href="#main">
+      {t.skip}
+    </a>
     <header class="site-header">
       <div class="container header-inner">
         <a class="wordmark" href={`/${lang}/`} aria-label={name + ' · ' + t.home}>
-          <svg viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="12"/><path d="M18 2v32M2 18h32"/><circle cx="18" cy="18" r="3" class="mark-core"/></svg>
-          <span>RUI ZHU<span class="wordmark-cn">朱睿</span></span>
+          <svg viewBox="0 0 36 36" aria-hidden="true">
+            <circle cx="18" cy="18" r="12" />
+            <path d="M18 2v32M2 18h32" />
+            <circle cx="18" cy="18" r="3" class="mark-core" />
+          </svg>
+          <span>
+            RUI ZHU<span class="wordmark-cn">朱睿</span>
+          </span>
         </a>
         <nav class="desktop-nav" aria-label={lang === 'zh' ? '主导航' : 'Main navigation'}>
-          {nav.map(item => <a href={`/${lang}/${item === 'home' ? '' : item + '/'}`} aria-current={page === item ? 'page' : undefined}>{t[item]}</a>)}
+          {nav.map((item) => (
+            <a
+              href={`/${lang}/${item === 'home' ? '' : item + '/'}`}
+              aria-current={page === item ? 'page' : undefined}
+            >
+              {t[item]}
+            </a>
+          ))}
         </nav>
         <div class="header-controls">
-          <a class="language-switch" data-language-switch href={`/${otherLang}/${section}`} lang={otherLang === 'zh' ? 'zh-CN' : 'en'} aria-label={otherLang === 'zh' ? '切换到中文' : 'Switch to English'}><span aria-hidden="true">◎</span> {otherLang === 'zh' ? '中文' : 'EN'}</a>
-          <button class="menu-toggle" aria-expanded="false" aria-controls="mobile-nav" aria-label={t.menu}><span></span><span></span></button>
+          <a
+            class="language-switch"
+            data-language-switch
+            href={`/${otherLang}/${section}`}
+            lang={otherLang === 'zh' ? 'zh-CN' : 'en'}
+            aria-label={otherLang === 'zh' ? '切换到中文' : 'Switch to English'}
+          >
+            <span aria-hidden="true">◎</span> {otherLang === 'zh' ? '中文' : 'EN'}
+          </a>
+          <button
+            class="menu-toggle"
+            aria-expanded="false"
+            aria-controls="mobile-nav"
+            aria-label={t.menu}
+          >
+            <span></span>
+            <span></span>
+          </button>
         </div>
       </div>
-      <nav class="mobile-nav container" id="mobile-nav" hidden aria-label={lang === 'zh' ? '手机导航' : 'Mobile navigation'}>
-        {nav.map(item => <a href={`/${lang}/${item === 'home' ? '' : item + '/'}`} aria-current={page === item ? 'page' : undefined}>{t[item]}</a>)}
+      <nav
+        class="mobile-nav container"
+        id="mobile-nav"
+        hidden
+        aria-label={lang === 'zh' ? '手机导航' : 'Mobile navigation'}
+      >
+        {nav.map((item) => (
+          <a
+            href={`/${lang}/${item === 'home' ? '' : item + '/'}`}
+            aria-current={page === item ? 'page' : undefined}
+          >
+            {t[item]}
+          </a>
+        ))}
       </nav>
     </header>
-    <main id="main" tabindex="-1"><slot /></main>
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
     <footer class="site-footer container">
-      <a class="footer-name" href={`/${lang}/`}>Rui Zhu <span>朱睿</span></a>
-      <div class="footer-links"><a href={profile.orcid} target="_blank" rel="noopener noreferrer">ORCID</a><a href={profile.github} target="_blank" rel="noopener noreferrer">GitHub</a><a href={`mailto:${profile.email}`}>{lang === 'zh' ? '邮件' : 'Email'}</a></div>
-      <small>© {new Date().getFullYear()} {t.copyright}</small>
+      <a class="footer-name" href={`/${lang}/`}>
+        Rui Zhu <span>朱睿</span>
+      </a>
+      <div class="footer-links">
+        <a href={profile.orcid} target="_blank" rel="noopener noreferrer">
+          ORCID
+        </a>
+        <a href={profile.github} target="_blank" rel="noopener noreferrer">
+          GitHub
+        </a>
+        <a href={`mailto:${profile.email}`}>{lang === 'zh' ? '邮件' : 'Email'}</a>
+      </div>
+      <small>
+        © {new Date().getFullYear()} {t.copyright}
+      </small>
     </footer>
     <script>
       const languageLink = document.querySelector<HTMLAnchorElement>('[data-language-switch]');
       languageLink?.addEventListener('click', () => {
         if (location.hash) languageLink.hash = location.hash;
-        try { localStorage.setItem('language', document.body.dataset.language === 'en' ? 'zh' : 'en'); } catch { /* optional preference */ }
+        try {
+          localStorage.setItem('language', document.body.dataset.language === 'en' ? 'zh' : 'en');
+        } catch {
+          /* optional preference */
+        }
       });
       const menu = document.querySelector<HTMLButtonElement>('.menu-toggle');
       const navigation = document.querySelector<HTMLElement>('#mobile-nav');

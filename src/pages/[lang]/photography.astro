@@ -2,30 +2,105 @@
 import Layout from '../../layouts/Layout.astro';
 import { photos } from '../../data/photography';
 import { text, languages, type Lang } from '../../data/i18n';
-export function getStaticPaths() { return languages.map(lang => ({ params: { lang } })); }
+export function getStaticPaths() {
+  return languages.map((lang) => ({ params: { lang } }));
+}
 const lang = Astro.params.lang as Lang;
 const t = text[lang];
 ---
+
 <Layout lang={lang} page="photography" title={t.photography} description={t.photoDescription}>
-  <section class="page-heading container"><p class="eyebrow">03 / {t.photography}</p><h1>{lang === 'zh' ? '观察，另一种尺度。' : 'Another scale of seeing.'}</h1><p>{t.photoIntro}</p></section>
-  {photos.length > 0 ? <section class="container photo-gallery" aria-label={t.photography}>
-    {photos.map((photo, index) => <figure class="photo-card">
-      <button class="photo-open" data-photo-index={index} aria-label={lang === 'zh' ? `查看：${photo.title.zh}` : `View: ${photo.title.en}`}>
-        <img src={photo.thumb} srcset={photo.sources.filter(s => s.width <= 1600).map(s => `${s.src} ${s.width}w`).join(', ')} sizes="(max-width: 560px) calc(100vw - 40px), (max-width: 900px) 45vw, 30vw" alt={photo.description[lang] || photo.title[lang]} width={photo.width} height={photo.height} loading="lazy" decoding="async" />
-      </button><figcaption><h2>{photo.title[lang]}</h2><p>{[photo.location[lang], photo.album[lang]].filter(Boolean).join(' · ')}</p></figcaption>
-    </figure>)}
-  </section> : <section class="container gallery-empty">
-    <div class="empty-frame" aria-hidden="true"><span class="frame-corner top-left"></span><span class="frame-corner top-right"></span><span class="frame-corner bottom-left"></span><span class="frame-corner bottom-right"></span><span class="empty-frame-label">RUI ZHU / PHOTOGRAPHY</span><span class="empty-frame-plus">+</span><span class="empty-frame-label">01 —</span></div>
-    <div><p class="eyebrow">{lang === 'zh' ? '精选作品集' : 'SELECTED PHOTOGRAPHS'}</p><h2>{t.coming}</h2><p>{t.emptyPhotos}</p></div>
-  </section>}
-  {photos.length > 0 && <>
-    <script type="application/json" id="photo-data" set:html={JSON.stringify(photos).replace(/</g, '\\u003c')} />
-    <dialog id="lightbox" aria-label={t.photography} data-loading={t.imageLoading} data-error={t.imageError}>
-      <div class="lightbox-toolbar"><span id="photo-position"></span><button class="icon-button" id="lightbox-close" aria-label={t.close}>×</button></div>
-      <div class="lightbox-image-wrap"><img id="lightbox-image" alt="" /><p id="image-status" role="status"></p></div>
-      <div class="lightbox-bottom"><button class="icon-button" id="photo-prev" aria-label={t.prev}>‹</button><div><h2 id="photo-title"></h2><p id="photo-caption"></p></div><button class="icon-button" id="photo-next" aria-label={t.next}>›</button></div>
-    </dialog>
-  </>}
+  <section class="page-heading container">
+    <p class="eyebrow">03 / {t.photography}</p>
+    <h1>{lang === 'zh' ? '观察，另一种尺度。' : 'Another scale of seeing.'}</h1>
+    <p>{t.photoIntro}</p>
+  </section>
+  {photos.length > 0 ? (
+    <section class="container photo-gallery" aria-label={t.photography}>
+      {photos.map((photo, index) => (
+        <figure class="photo-card">
+          <button
+            class="photo-open"
+            data-photo-index={index}
+            aria-label={lang === 'zh' ? `查看：${photo.title.zh}` : `View: ${photo.title.en}`}
+          >
+            <img
+              src={photo.thumb}
+              srcset={photo.sources
+                .filter((s) => s.width <= 1600)
+                .map((s) => `${s.src} ${s.width}w`)
+                .join(', ')}
+              sizes="(max-width: 560px) calc(100vw - 40px), (max-width: 900px) 45vw, 30vw"
+              alt={photo.description[lang] || photo.title[lang]}
+              width={photo.width}
+              height={photo.height}
+              loading="lazy"
+              decoding="async"
+            />
+          </button>
+          <figcaption>
+            <h2>{photo.title[lang]}</h2>
+            <p>{[photo.location[lang], photo.album[lang]].filter(Boolean).join(' · ')}</p>
+          </figcaption>
+        </figure>
+      ))}
+    </section>
+  ) : (
+    <section class="container gallery-empty">
+      <div class="empty-frame" aria-hidden="true">
+        <span class="frame-corner top-left"></span>
+        <span class="frame-corner top-right"></span>
+        <span class="frame-corner bottom-left"></span>
+        <span class="frame-corner bottom-right"></span>
+        <span class="empty-frame-label">RUI ZHU / PHOTOGRAPHY</span>
+        <span class="empty-frame-plus">+</span>
+        <span class="empty-frame-label">01 —</span>
+      </div>
+      <div>
+        <p class="eyebrow">{lang === 'zh' ? '精选作品集' : 'SELECTED PHOTOGRAPHS'}</p>
+        <h2>{t.coming}</h2>
+        <p>{t.emptyPhotos}</p>
+      </div>
+    </section>
+  )}
+  {photos.length > 0 && (
+    <>
+      <script
+        type="application/json"
+        id="photo-data"
+        set:html={JSON.stringify(photos).replace(/</g, '\\u003c')}
+      />
+      <dialog
+        id="lightbox"
+        aria-label={t.photography}
+        data-loading={t.imageLoading}
+        data-error={t.imageError}
+      >
+        <div class="lightbox-toolbar">
+          <span id="photo-position"></span>
+          <button class="icon-button" id="lightbox-close" aria-label={t.close}>
+            ×
+          </button>
+        </div>
+        <div class="lightbox-image-wrap">
+          <img id="lightbox-image" alt="" />
+          <p id="image-status" role="status"></p>
+        </div>
+        <div class="lightbox-bottom">
+          <button class="icon-button" id="photo-prev" aria-label={t.prev}>
+            ‹
+          </button>
+          <div>
+            <h2 id="photo-title"></h2>
+            <p id="photo-caption"></p>
+          </div>
+          <button class="icon-button" id="photo-next" aria-label={t.next}>
+            ›
+          </button>
+        </div>
+      </dialog>
+    </>
+  )}
 </Layout>
 <script>
   import type { Photo } from '../../data/photography';
@@ -44,30 +119,65 @@ const t = text[lang];
       const photo = photos[current];
       document.querySelector('#photo-position')!.textContent = `${current + 1} / ${photos.length}`;
       document.querySelector('#photo-title')!.textContent = photo.title[lang];
-      document.querySelector('#photo-caption')!.textContent = [photo.location[lang], photo.date, photo.description[lang]].filter(Boolean).join(' · ');
+      document.querySelector('#photo-caption')!.textContent = [
+        photo.location[lang],
+        photo.date,
+        photo.description[lang],
+      ]
+        .filter(Boolean)
+        .join(' · ');
       image.alt = photo.description[lang] || photo.title[lang];
       image.style.opacity = '0';
       status.textContent = dialog.dataset.loading ?? '';
-      image.onload = () => { image.style.opacity = '1'; status.textContent = ''; };
-      image.onerror = () => { status.textContent = dialog.dataset.error ?? ''; };
+      image.onload = () => {
+        image.style.opacity = '1';
+        status.textContent = '';
+      };
+      image.onerror = () => {
+        status.textContent = dialog.dataset.error ?? '';
+      };
       image.src = photo.large;
-      for (const id of ['photo-prev', 'photo-next']) document.querySelector<HTMLButtonElement>(`#${id}`)!.disabled = photos.length < 2;
+      for (const id of ['photo-prev', 'photo-next'])
+        document.querySelector<HTMLButtonElement>(`#${id}`)!.disabled = photos.length < 2;
     };
-    document.querySelectorAll<HTMLButtonElement>('[data-photo-index]').forEach(button => button.addEventListener('click', () => {
-      opener = button;
-      savedScroll = window.scrollY;
-      show(Number(button.dataset.photoIndex));
-      dialog.showModal();
-      document.body.style.overflow = 'hidden';
-    }));
-    dialog.addEventListener('close', () => { document.body.style.overflow = ''; window.scrollTo(0, savedScroll); opener?.focus({ preventScroll: true }); });
+    document.querySelectorAll<HTMLButtonElement>('[data-photo-index]').forEach((button) =>
+      button.addEventListener('click', () => {
+        opener = button;
+        savedScroll = window.scrollY;
+        show(Number(button.dataset.photoIndex));
+        dialog.showModal();
+        document.body.style.overflow = 'hidden';
+      }),
+    );
+    dialog.addEventListener('close', () => {
+      document.body.style.overflow = '';
+      window.scrollTo(0, savedScroll);
+      opener?.focus({ preventScroll: true });
+    });
     document.querySelector('#lightbox-close')?.addEventListener('click', () => dialog.close());
     document.querySelector('#photo-prev')?.addEventListener('click', () => show(current - 1));
     document.querySelector('#photo-next')?.addEventListener('click', () => show(current + 1));
-    dialog.addEventListener('keydown', event => {
-      if (event.key === 'ArrowLeft') { event.preventDefault(); show(current - 1); }
-      if (event.key === 'ArrowRight') { event.preventDefault(); show(current + 1); }
+    dialog.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        show(current - 1);
+      }
+      if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        show(current + 1);
+      }
     });
-    dialog.addEventListener('click', event => { if (event.target === dialog) { const r = dialog.getBoundingClientRect(); if (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom) dialog.close(); } });
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) {
+        const r = dialog.getBoundingClientRect();
+        if (
+          event.clientX < r.left ||
+          event.clientX > r.right ||
+          event.clientY < r.top ||
+          event.clientY > r.bottom
+        )
+          dialog.close();
+      }
+    });
   }
 </script>

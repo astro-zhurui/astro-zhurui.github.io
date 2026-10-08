@@ -15,21 +15,61 @@ const bibtex = `@article{Zhu2026QHSC,
   doi = {10.3847/1538-4365/ae2099}
 }`;
 ---
+
 <article class:list={['publication', { 'publication-full': full }]}>
-  <div class="publication-meta"><span class="eyebrow">{p.year} / {p.reference}</span><span class="publication-status">{t.published}</span></div>
-  <Heading><a href={p.url} target="_blank" rel="noopener noreferrer">{p.title}</a></Heading>
-  <p class="authors"><strong>Rui Zhu</strong>, Xue-Bing Wu, Yuxuan Pang, Yuming Fu</p>
+  <div class="publication-meta">
+    <span class="eyebrow">
+      {p.year} / {p.reference}
+    </span>
+    <span class="publication-status">{t.published}</span>
+  </div>
+  <Heading>
+    <a href={p.url} target="_blank" rel="noopener noreferrer">
+      {p.title}
+    </a>
+  </Heading>
+  <p class="authors">
+    <strong>Rui Zhu</strong>, Xue-Bing Wu, Yuxuan Pang, Yuming Fu
+  </p>
   <p class="publication-summary">{p.summary[lang]}</p>
-  <div class="link-row"><a class="text-link" href={p.url} target="_blank" rel="noopener noreferrer">{t.paper}</a><a class="text-link" href={p.arxiv} target="_blank" rel="noopener noreferrer">{t.preprint}</a><a class="text-link" href={p.catalog} target="_blank" rel="noopener noreferrer">{t.data}</a></div>
-  {full && <details class="citation"><summary>{t.cite} / BibTeX</summary><pre><code id="bibtex">{bibtex}</code></pre><button class="button small" id="copy-citation" data-success={t.copied} data-failure={t.copyFailed}>{t.copy}</button><p id="copy-status" class="muted" role="status"></p></details>}
+  <div class="link-row">
+    <a class="text-link" href={p.url} target="_blank" rel="noopener noreferrer">
+      {t.paper}
+    </a>
+    <a class="text-link" href={p.arxiv} target="_blank" rel="noopener noreferrer">
+      {t.preprint}
+    </a>
+    <a class="text-link" href={p.catalog} target="_blank" rel="noopener noreferrer">
+      {t.data}
+    </a>
+  </div>
+  {full && (
+    <details class="citation">
+      <summary>{t.cite} / BibTeX</summary>
+      <pre><code id="bibtex">{bibtex}</code></pre>
+      <button
+        class="button small"
+        id="copy-citation"
+        data-success={t.copied}
+        data-failure={t.copyFailed}
+      >
+        {t.copy}
+      </button>
+      <p id="copy-status" class="muted" role="status"></p>
+    </details>
+  )}
 </article>
 <script>
-  document.querySelector<HTMLButtonElement>('#copy-citation')?.addEventListener('click', async (event) => {
-    const button = event.currentTarget as HTMLButtonElement;
-    const status = document.querySelector('#copy-status');
-    try {
-      await navigator.clipboard.writeText(document.querySelector('#bibtex')?.textContent ?? '');
-      if (status) status.textContent = button.dataset.success ?? 'Copied';
-    } catch { if (status) status.textContent = button.dataset.failure ?? 'Please copy the text above.'; }
-  });
+  document
+    .querySelector<HTMLButtonElement>('#copy-citation')
+    ?.addEventListener('click', async (event) => {
+      const button = event.currentTarget as HTMLButtonElement;
+      const status = document.querySelector('#copy-status');
+      try {
+        await navigator.clipboard.writeText(document.querySelector('#bibtex')?.textContent ?? '');
+        if (status) status.textContent = button.dataset.success ?? 'Copied';
+      } catch {
+        if (status) status.textContent = button.dataset.failure ?? 'Please copy the text above.';
+      }
+    });
 </script>
