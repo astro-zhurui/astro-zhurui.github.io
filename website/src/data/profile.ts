@@ -6,7 +6,7 @@ export const profile = {
     en: 'National Astronomical Observatories, Chinese Academy of Sciences',
     zh: '中国科学院国家天文台',
   },
-  email: 'rui@stu.pku.edu.cn',
+  email: 'zhurui@nao.cas.cn',
   github: 'https://github.com/astro-zhurui',
   orcid: 'https://orcid.org/0000-0002-0792-2353',
   cv: { en: null as string | null, zh: null as string | null },
