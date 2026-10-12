@@ -16,6 +16,6 @@
 
 `website/public/photos/` 与 `website/src/data/photos.json` 自动生成。`website/.local/build/` 是构建结果；`.local/qa/` 是测试、截图与核对资料；`.local/cache/` 是缓存，这些不加入 Git。
 
-论文保存在 `website/src/data/publications.json`，每条含 DOI、作者、引用等字段。首页明确选择 `id: qhsc`，不依赖列表顺序。完整列表按年份排列，作者名单突出 Rui Zhu，每篇 BibTeX 的复制按钮各自独立。
+论文保存在 `website/src/data/publications.json`，每条含 DOI、作者、引用等字段。首页明确选择 `id: qhsc`，不依赖列表顺序。完整列表按年份排列，作者名单突出 Rui Zhu，每篇保留期刊文章链接；有公开预印本或星表时提供对应链接。
 
 照片原片不进入 Git；展示图会公开。移除展示图不抹去历史提交，请只导入已经决定公开的作品。

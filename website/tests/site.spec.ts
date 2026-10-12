@@ -69,18 +69,14 @@ test('public paper, real education dates, and current gallery', async ({ page })
     'href',
     'https://iopscience.iop.org/article/10.3847/1538-4365/ae2099',
   );
-  await qhsc.locator('summary').click();
-  await expect(qhsc.locator('[data-bibtex]')).toContainText('10.3847/1538-4365/ae2099');
-  await page.context().grantPermissions(['clipboard-read', 'clipboard-write']);
-  await qhsc.locator('[data-copy-citation]').click();
-  await expect(qhsc.locator('[data-copy-status]')).toHaveText('Copied');
-  expect(await page.evaluate(() => navigator.clipboard.readText())).toContain('Zhu2026QHSC');
-  const collaboration = page.locator('[data-doi="10.3390/universe12070213"]');
-  await collaboration.locator('summary').click();
-  await collaboration.locator('[data-copy-citation]').click();
-  expect(await page.evaluate(() => navigator.clipboard.readText())).toContain(
-    '10.3390/universe12070213',
-  );
+  await expect(page.locator('h1')).toHaveText('Publications');
+  await expect(page.locator('.citation, [data-copy-citation]')).toHaveCount(0);
+  await expect(page.locator('body')).not.toContainText(/BibTeX/i);
+  await page.goto('/zh/publications/');
+  await expect(page.locator('h1')).toHaveText('Publications');
+  await expect(page.locator('article.publication')).toHaveCount(publications.length);
+  await expect(page.locator('.citation, [data-copy-citation]')).toHaveCount(0);
+  await expect(page.locator('body')).not.toContainText(/BibTeX/i);
 
   await page.goto('/zh/about/');
   await expect(page.locator('body')).toContainText('2026.08');

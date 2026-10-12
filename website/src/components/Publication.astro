@@ -52,35 +52,4 @@ const t = text[lang];
       </a>
     )}
   </div>
-  {full && (
-    <details class="citation">
-      <summary>{lang === 'en' ? 'Citation / BibTeX' : 'BibTeX'}</summary>
-      <pre><code data-bibtex>{p.bibtex}</code></pre>
-      <button
-        class="button small"
-        data-copy-citation
-        data-success={t.copied}
-        data-failure={t.copyFailed}
-      >
-        {t.copy}
-      </button>
-      <p data-copy-status class="muted" role="status"></p>
-    </details>
-  )}
 </article>
-<script>
-  document.querySelectorAll<HTMLButtonElement>('[data-copy-citation]').forEach((button) =>
-    button.addEventListener('click', async () => {
-      const article = button.closest('.publication')!;
-      const status = article.querySelector('[data-copy-status]')!;
-      try {
-        await navigator.clipboard.writeText(
-          article.querySelector('[data-bibtex]')?.textContent ?? '',
-        );
-        status.textContent = button.dataset.success ?? 'Copied';
-      } catch {
-        status.textContent = button.dataset.failure ?? 'Please copy the text above.';
-      }
-    }),
-  );
-</script>

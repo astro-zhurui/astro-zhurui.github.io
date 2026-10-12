@@ -15,8 +15,7 @@
     "journal": "Universe",
     "reference": "Universe 12, 213",
     "doi": "10.3390/universe12070213",
-    "url": "https://doi.org/10.3390/universe12070213",
-    "bibtex": "@article{Feng2026universe12070213,\n  author = {Feng, Xiaotong and Wu, Xue-Bing and Fu, Yuming and Pang, Yuxuan and Zhu, Rui and Wang, Huimei},\n  title = {Far-Infrared Star Formation Rates of Quasar Host Galaxies from Multiwavelength Spectral Energy Distribution Decomposition},\n  journal = {Universe},\n  year = {2026},\n  volume = {12},\n  pages = {213},\n  doi = {10.3390/universe12070213}\n}"
+    "url": "https://doi.org/10.3390/universe12070213"
   },
   {
     "id": "universe12070214",
@@ -34,8 +33,7 @@
     "journal": "Universe",
     "reference": "Universe 12, 214",
     "doi": "10.3390/universe12070214",
-    "url": "https://doi.org/10.3390/universe12070214",
-    "bibtex": "@article{Feng2026universe12070214,\n  author = {Feng, Xiaotong and Wu, Xue-Bing and Fu, Yuming and Pang, Yuxuan and Zhu, Rui and Wang, Huimei},\n  title = {Testing [O II] λ3727 as a Star Formation Rate Tracer in Quasar Host Galaxies},\n  journal = {Universe},\n  year = {2026},\n  volume = {12},\n  pages = {214},\n  doi = {10.3390/universe12070214}\n}"
+    "url": "https://doi.org/10.3390/universe12070214"
   },
   {
     "id": "ae2b6e",
@@ -59,8 +57,7 @@
     "journal": "The Astrophysical Journal Supplement Series",
     "reference": "ApJS 282, 72",
     "doi": "10.3847/1538-4365/ae2b6e",
-    "url": "https://doi.org/10.3847/1538-4365/ae2b6e",
-    "bibtex": "@article{Lyu2026ae2b6e,\n  author = {Lyu, Bing and Wu, Xue-Bing and Jin, Jun-Jie and Fu, Yuming and Pang, Yuxuan and Wang, Huimei and Zhu, Rui and Yao, Su and Ai, Yan-Li and Zhang, Yan-xia and Yuan, Hai-long and Huo, Zhi-ying},\n  title = {The Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) Quasar Survey: Quasar Properties from Data Releases 10 to 12},\n  journal = {The Astrophysical Journal Supplement Series},\n  year = {2026},\n  volume = {282},\n  pages = {72},\n  doi = {10.3847/1538-4365/ae2b6e}\n}"
+    "url": "https://doi.org/10.3847/1538-4365/ae2b6e"
   },
   {
     "id": "qhsc",
@@ -77,8 +74,7 @@
     "summary": {
       "en": "A machine-learning-selected quasar candidate catalog from HSC-SSP DR3, with four photometric samples, classification probabilities, and photometric redshifts.",
       "zh": "基于 HSC-SSP DR3 构建的类星体候选体星表，包含四个测光样本、分类概率与测光红移。"
-    },
-    "bibtex": "@article{Zhu2026QHSC,\n  author = {Zhu, Rui and Wu, Xue-Bing and Pang, Yuxuan and Fu, Yuming},\n  title = {QHSC: The Quasar Candidate Catalog for the Hyper Suprime-Cam Subaru Strategic Program},\n  journal = {The Astrophysical Journal Supplement Series},\n  year = {2026},\n  volume = {282},\n  pages = {38},\n  doi = {10.3847/1538-4365/ae2099}\n}"
+    }
   },
   {
     "id": "ae1fdc",
@@ -98,8 +94,7 @@
     "journal": "The Astrophysical Journal",
     "reference": "ApJ 997, 100",
     "doi": "10.3847/1538-4357/ae1fdc",
-    "url": "https://doi.org/10.3847/1538-4357/ae1fdc",
-    "bibtex": "@article{Wang2026ae1fdc,\n  author = {Wang, Huimei and Wu, Xue-Bing and Yao, Nanyu and Lyu, Bing and Pang, Yuxuan and Fu, Yuming and Zhu, Rui and Yang, Qian},\n  title = {Systematic Analysis of Changing-Look Active Galactic Nucleus Variability Using ZTF Light Curves},\n  journal = {The Astrophysical Journal},\n  year = {2026},\n  volume = {997},\n  pages = {100},\n  doi = {10.3847/1538-4357/ae1fdc}\n}"
+    "url": "https://doi.org/10.3847/1538-4357/ae1fdc"
   },
   {
     "id": "ade999",
@@ -126,8 +121,7 @@
     "journal": "The Astrophysical Journal Supplement Series",
     "reference": "ApJS 279, 54",
     "doi": "10.3847/1538-4365/ade999",
-    "url": "https://doi.org/10.3847/1538-4365/ade999",
-    "bibtex": "@article{Fu2025ade999,\n  author = {Fu, Yuming and Wu, Xue-Bing and Bouwens, R. J. and Caputi, Karina I. and Pang, Yuxuan and Zhu, Rui and Yang, Da-Ming and Qin, Jin and Wang, Huimei and Wolf, Christian and Li, Yifan and Joshi, Ravi and Zhang, Yanxia and Huo, Zhi-Ying and Ai, Y. L.},\n  title = {The CatSouth Quasar Candidate Catalog for the Southern Sky and a Unified All-sky Catalog Based on Gaia DR3},\n  journal = {The Astrophysical Journal Supplement Series},\n  year = {2025},\n  volume = {279},\n  pages = {54},\n  doi = {10.3847/1538-4365/ade999}\n}"
+    "url": "https://doi.org/10.3847/1538-4365/ade999"
   },
   {
     "id": "staf849",
@@ -147,8 +141,7 @@
     "reference": "MNRAS 540, 2216-2237",
     "doi": "10.1093/mnras/staf849",
     "url": "https://doi.org/10.1093/mnras/staf849",
-    "arxiv": "https://arxiv.org/abs/2505.14025",
-    "bibtex": "@article{Pang2025staf849,\n  author = {Pang, Yuxuan and Wu, Xue-Bing and Fu, Yuming and Zhu, Rui and Ji, Tao and Ma, Qinchun and Feng, Xiaotong},\n  title = {Quasar identifications from the slitless spectra: a test from 3D-HST},\n  journal = {Monthly Notices of the Royal Astronomical Society},\n  year = {2025},\n  volume = {540},\n  pages = {2216--2237},\n  doi = {10.1093/mnras/staf849}\n}"
+    "arxiv": "https://arxiv.org/abs/2505.14025"
   },
   {
     "id": "adabdc",
@@ -167,8 +160,7 @@
     "journal": "The Astrophysical Journal",
     "reference": "ApJ 980, 223",
     "doi": "10.3847/1538-4357/adabdc",
-    "url": "https://doi.org/10.3847/1538-4357/adabdc",
-    "bibtex": "@article{Pang2025adabdc,\n  author = {Pang, Yuxuan and Wu, Xue-Bing and Fu, Yuming and Zhu, Rui and Lyu, Bing and Wang, Huimei and Feng, Xiaotong},\n  title = {A Pilot Study for the CSST Slitless Spectroscopic Quasar Survey Based on Mock Data},\n  journal = {The Astrophysical Journal},\n  year = {2025},\n  volume = {980},\n  pages = {223},\n  doi = {10.3847/1538-4357/adabdc}\n}"
+    "url": "https://doi.org/10.3847/1538-4357/adabdc"
   },
   {
     "id": "202451699",
@@ -194,8 +186,7 @@
     "journal": "Astronomy & Astrophysics",
     "reference": "A&A 693, A173",
     "doi": "10.1051/0004-6361/202451699",
-    "url": "https://doi.org/10.1051/0004-6361/202451699",
-    "bibtex": "@article{Lyu2025202451699,\n  author = {Lyu, Bing and Wu, Xue-Bing and Pang, Yuxuan and Wang, Huimei and Zhu, Rui and Fu, Yuming and Wu, Qingwen and Yan, Zhen and Yu, Wenfei and Liu, Hao and Kang, Shi-Ju and Jin, Junjie and Yang, Jinyi and Wang, Feige},\n  title = {The changing-look AGN SDSS J101152.98+544206.4 is returning to a type I state},\n  journal = {Astronomy & Astrophysics},\n  year = {2025},\n  volume = {693},\n  pages = {A173},\n  doi = {10.1051/0004-6361/202451699}\n}"
+    "url": "https://doi.org/10.1051/0004-6361/202451699"
   },
   {
     "id": "ad2ae6",
@@ -228,8 +219,7 @@
     "reference": "ApJS 271, 54",
     "doi": "10.3847/1538-4365/ad2ae6",
     "url": "https://doi.org/10.3847/1538-4365/ad2ae6",
-    "arxiv": "https://arxiv.org/abs/2310.12704",
-    "bibtex": "@article{Fu2024ad2ae6,\n  author = {Fu, Yuming and Wu, Xue-Bing and Li, Yifan and Pang, Yuxuan and Joshi, Ravi and Zhang, Shuo and Wang, Qiyue and Yang, Jing and Ng, FanLam and Liu, Xingjian and Qiu, Yu and Zhu, Rui and Wang, Huimei and Wolf, Christian and Zhang, Yanxia and Huo, Zhi-Ying and Ai, Y. L. and Ma, Qinchun and Feng, Xiaotong and Bouwens, R. J.},\n  title = {CatNorth: An Improved Gaia DR3 Quasar Candidate Catalog with Pan-STARRS1 and CatWISE},\n  journal = {The Astrophysical Journal Supplement Series},\n  year = {2024},\n  volume = {271},\n  pages = {54},\n  doi = {10.3847/1538-4365/ad2ae6}\n}"
+    "arxiv": "https://arxiv.org/abs/2310.12704"
   },
   {
     "id": "acaf89",
@@ -255,7 +245,6 @@
     "reference": "ApJS 265, 25",
     "doi": "10.3847/1538-4365/acaf89",
     "url": "https://doi.org/10.3847/1538-4365/acaf89",
-    "arxiv": "https://arxiv.org/abs/2212.12876",
-    "bibtex": "@article{Jin2023acaf89,\n  author = {Jin, Jun-Jie and Wu, Xue-Bing and Fu, Yuming and Yao, Su and Ai, Yan-Li and Feng, Xiao-Tong and He, Zi-Qi and Ma, Qin-Chun and Pang, Yu-Xuan and Zhu, Rui and Zhang, Yan-xia and Yuan, Hai-long and Huo, Zhi-Ying},\n  title = {The Large Sky Area Multi-Object Fiber Spectroscopic Telescope (LAMOST) Quasar Survey: Quasar Properties from Data Releases 6 to 9},\n  journal = {The Astrophysical Journal Supplement Series},\n  year = {2023},\n  volume = {265},\n  pages = {25},\n  doi = {10.3847/1538-4365/acaf89}\n}"
+    "arxiv": "https://arxiv.org/abs/2212.12876"
   }
 ]

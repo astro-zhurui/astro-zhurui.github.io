@@ -13,7 +13,6 @@ export interface PublicationRecord {
   arxiv?: string;
   catalog?: string;
   summary?: { en: string; zh: string };
-  bibtex: string;
 }
 export const publications: PublicationRecord[] = items;
 

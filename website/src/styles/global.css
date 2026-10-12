@@ -506,28 +506,6 @@ summary:focus-visible {
   font-size: 1rem;
   color: var(--muted);
 }
-.citation {
-  border-top: 1px solid var(--line);
-  margin-top: 24px;
-  padding-top: 18px;
-}
-.citation summary {
-  font-size: 0.875rem;
-  cursor: pointer;
-  color: var(--muted);
-}
-.citation pre {
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-  background: var(--soft);
-  padding: 18px;
-  font-size: 0.75rem;
-  line-height: 1.8;
-}
-.citation #copy-status {
-  font-size: 0.8125rem;
-  margin-top: 10px;
-}
 .about-intro {
   display: grid;
   grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
@@ -590,6 +568,42 @@ summary:focus-visible {
 .timeline p:not(.eyebrow) {
   font-size: 0.9375rem;
   margin-block: 4px;
+}
+.institution-entry {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+  min-width: 0;
+}
+.institution-logo {
+  width: 56px;
+  height: 56px;
+  display: grid;
+  place-items: center;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 5px;
+}
+.institution-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.institution-copy {
+  min-width: 0;
+}
+.institution-copy h3 a:hover {
+  color: var(--accent);
+}
+.timeline .institution-detail {
+  font-size: 0.8125rem;
+}
+.timeline .institution-supervisor {
+  font-size: 0.8125rem;
+  color: var(--text);
+  margin-top: 8px;
 }
 .timeline .eyebrow {
   font-size: 0.75rem;
@@ -848,4 +862,16 @@ html[lang='zh-CN'] :is(h1, h2, h3) {
 }
 .publication-full {
   scroll-margin-top: 100px;
+}
+
+@media (max-width: 720px) {
+  .institution-entry {
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 12px;
+  }
+  .institution-logo {
+    width: 44px;
+    height: 44px;
+    padding: 4px;
+  }
 }

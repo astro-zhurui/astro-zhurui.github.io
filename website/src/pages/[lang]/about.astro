@@ -38,10 +38,32 @@ const t = text[lang];
       {profile.experience.map((item) => (
         <article>
           <p class="eyebrow">{item.period}</p>
-          <div>
-            <h3>{item.institution[lang]}</h3>
-            <p>{item[lang]}</p>
-            <span class="muted">{item.detail[lang]}</span>
+          <div class="institution-entry">
+            <div class="institution-logo" aria-hidden="true">
+              <img
+                src={item.institution.logo}
+                width="48"
+                height="48"
+                alt=""
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <div class="institution-copy">
+              <h3>
+                <a href={item.institution.url} target="_blank" rel="noopener noreferrer">
+                  {item.institution[lang]}
+                </a>
+              </h3>
+              <p>{item[lang]}</p>
+              <p class="institution-detail">{item.detail[lang]}</p>
+              {item.supervisor && (
+                <p class="institution-supervisor">
+                  {lang === 'zh' ? '导师：' : 'Supervisor: '}
+                  {item.supervisor[lang]}
+                </p>
+              )}
+            </div>
           </div>
         </article>
       ))}
