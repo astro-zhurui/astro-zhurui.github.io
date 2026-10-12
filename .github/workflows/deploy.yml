@@ -17,6 +17,9 @@ jobs:
       - uses: actions/checkout@v7
       - uses: withastro/action@v6
         with:
+          path: 网站
+          out-dir: .local/build
+          cache-dir: .local/cache
           node-version: 24
           build-cmd: npm run check && npm run build
   deploy:

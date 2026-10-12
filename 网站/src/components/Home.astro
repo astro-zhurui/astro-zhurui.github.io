@@ -1,0 +1,101 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Publication from './Publication.astro';
+import { text, type Lang } from '../data/i18n';
+import { profile } from '../data/profile';
+import { photos } from '../data/photography';
+const { lang } = Astro.props as { lang: Lang };
+const t = text[lang];
+const portrait = photos.find((photo) => photo.homepage);
+const featuredPhoto = portrait ?? photos[0];
+---
+
+<Layout lang={lang} page="home">
+  <section class="hero container">
+    <div class="hero-copy">
+      <p class="eyebrow">{profile.role[lang]}</p>
+      <h1>
+        {profile.name[lang]} <span>{profile.name[lang === 'en' ? 'zh' : 'en']}</span>
+      </h1>
+      <p class="hero-affiliation">{profile.affiliation[lang]}</p>
+      <p class="hero-intro">{t.intro}</p>
+      <div class="link-row hero-links">
+        <a class="button primary" href={`/${lang}/research/`}>
+          {t.explore}
+        </a>
+        <a class="text-link" href={`mailto:${profile.email}`}>
+          {lang === 'zh' ? '联系我' : 'Contact'}
+        </a>
+        <a class="text-link" href={profile.orcid} target="_blank" rel="noopener noreferrer">
+          ORCID
+        </a>
+      </div>
+    </div>
+    {portrait && (
+      <figure class="hero-portrait">
+        <a
+          href={`/${lang}/photography/#photo-${portrait.id}`}
+          aria-label={lang === 'zh' ? '在摄影页查看个人照片' : 'View portrait in Photography'}
+        >
+          <img
+            src={portrait.thumb}
+            srcset={portrait.sources.map((source) => `${source.src} ${source.width}w`).join(', ')}
+            sizes="(max-width: 720px) 200px, 260px"
+            width={portrait.width}
+            height={portrait.height}
+            alt={portrait.description[lang] || profile.name[lang]}
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+          />
+        </a>
+      </figure>
+    )}
+  </section>
+  <section class="container interests" aria-labelledby="interests-heading">
+    <h2 id="interests-heading">{t.researchFocus}</h2>
+    <ul>
+      {profile.interests.map((interest) => (
+        <li>{interest[lang]}</li>
+      ))}
+    </ul>
+  </section>
+  <section class="section container home-publication" id="qhsc">
+    <div class="section-top">
+      <h2>{t.selected}</h2>
+      <a class="text-link" href={`/${lang}/publications/`}>
+        {t.allPapers}
+      </a>
+    </div>
+    <Publication lang={lang} />
+    <a class="text-link project-link" href={`/${lang}/research/#qhsc`}>
+      {lang === 'zh' ? 'QHSC 研究与样本说明' : 'QHSC research & sample details'}
+    </a>
+  </section>
+  <section class="photo-teaser container">
+    <div>
+      <p class="eyebrow">{t.beyond}</p>
+      <h2>{t.photography}</h2>
+      <p>{t.photoIntro}</p>
+      <a class="text-link" href={`/${lang}/photography/`}>
+        {t.gallery}
+      </a>
+    </div>
+    {featuredPhoto && (
+      <a
+        class="teaser-photo"
+        href={`/${lang}/photography/#photo-${featuredPhoto.id}`}
+        aria-label={t.gallery}
+      >
+        <img
+          src={featuredPhoto.thumb}
+          width={featuredPhoto.width}
+          height={featuredPhoto.height}
+          alt={featuredPhoto.description[lang] || t.photography}
+          loading="lazy"
+          decoding="async"
+        />
+      </a>
+    )}
+  </section>
+</Layout>

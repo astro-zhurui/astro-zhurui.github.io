@@ -1,14 +1,12 @@
-node_modules/
-dist/
-.astro/
-incoming/**
-!incoming/photos/
-!incoming/photos/.gitkeep
-!incoming/cv/
-!incoming/cv/.gitkeep
-work/
-test-results/
-playwright-report/
+# Local originals and optional metadata never enter Git or the public site.
+照片/*
+!照片/README.md
+资料/
+网站/node_modules/
+网站/dist/
+网站/.astro/
+网站/work/
+网站/.local/
 .DS_Store
 .env*
 !.env.example

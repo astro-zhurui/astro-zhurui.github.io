@@ -1,0 +1,9 @@
+{
+  "order": 10,
+  "description": {
+    "en": "A short visual description for screen readers.",
+    "zh": "供读屏软件使用的简短画面描述。"
+  },
+  "homepage": false,
+  "published": true
+}
