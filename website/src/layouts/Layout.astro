@@ -34,7 +34,9 @@ const pageTitle = title
     {page === '404' && <meta name="robots" content="noindex" />}
     <title>{pageTitle}</title>
     <meta name="description" content={description ?? profile.biography[lang]} />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/icons/rz-32.png" type="image/png" sizes="32x32" />
+    <link rel="icon" href="/icons/rz.svg" type="image/svg+xml" sizes="any" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-rz.png" sizes="180x180" />
     <link rel="canonical" href={canonical} />
     <link rel="alternate" hreflang="en" href={`https://astro-zhurui.github.io/en/${section}`} />
     <link rel="alternate" hreflang="zh-CN" href={`https://astro-zhurui.github.io/zh/${section}`} />
