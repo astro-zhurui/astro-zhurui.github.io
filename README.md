@@ -1,6 +1,8 @@
 # Rui Zhu · 朱睿
 
-主页：https://astro-zhurui.github.io/zh/
+主页：https://astro-zhurui.github.io/
+
+主页默认使用英文，中文版本通过页面上的语言按钮切换。
 
 ## 加照片
 

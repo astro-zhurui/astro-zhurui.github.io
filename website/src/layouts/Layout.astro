@@ -48,15 +48,6 @@ const pageTitle = title
     <meta property="og:description" content={description ?? profile.biography[lang]} />
     <meta property="og:url" content={canonical} />
     <meta property="og:locale" content={lang === 'zh' ? 'zh_CN' : 'en_US'} />
-    <script is:inline>
-      // Respect an explicit URL. Only the root uses the remembered language.
-      try {
-        if (location.pathname === '/' && localStorage.getItem('language') === 'zh')
-          location.replace('/zh/' + location.hash);
-      } catch {
-        /* Language links work even when storage is disabled. */
-      }
-    </script>
   </head>
   <body data-language={lang} data-page={page}>
     <a class="skip-link" href="#main">
@@ -138,11 +129,6 @@ const pageTitle = title
       const languageLink = document.querySelector<HTMLAnchorElement>('[data-language-switch]');
       languageLink?.addEventListener('click', () => {
         if (location.hash) languageLink.hash = location.hash;
-        try {
-          localStorage.setItem('language', document.body.dataset.language === 'en' ? 'zh' : 'en');
-        } catch {
-          /* optional preference */
-        }
       });
       const menu = document.querySelector<HTMLButtonElement>('.menu-toggle');
       const navigation = document.querySelector<HTMLElement>('#mobile-nav');

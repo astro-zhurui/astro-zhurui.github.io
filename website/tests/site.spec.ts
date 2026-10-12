@@ -43,16 +43,23 @@ test('all bilingual pages render without horizontal overflow or browser errors',
   expect(resources).toEqual([]);
 });
 
-test('language switch preserves route and hash and remembers language', async ({ page }) => {
+test('language switch preserves route and hash; root defaults to English', async ({ page }) => {
   await page.goto('/en/research/#qhsc');
   await page.locator('[data-language-switch]').click();
   await expect(page).toHaveURL(/\/zh\/research\/#qhsc$/);
   await expect(page.locator('h1')).toHaveText('研究方向');
+  // An existing visitor's old preference must not override the English entry point.
+  await page.evaluate(() => localStorage.setItem('language', 'zh'));
   await page.goto('/');
+  await page.waitForLoadState('networkidle');
+  await expect(page).toHaveURL('/');
+  await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+  await page.locator('[data-language-switch]').click();
   await expect(page).toHaveURL(/\/zh\/$/);
+  await expect(page.locator('html')).toHaveAttribute('lang', 'zh-CN');
   await page.locator('[data-language-switch]').click();
   await expect(page).toHaveURL(/\/en\/$/);
-  expect(await page.evaluate(() => localStorage.getItem('language'))).toBe('en');
+  await expect(page.locator('html')).toHaveAttribute('lang', 'en');
 });
 
 test('public paper, real education dates, and current gallery', async ({ page }) => {
