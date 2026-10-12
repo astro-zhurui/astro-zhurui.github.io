@@ -1,12 +1,12 @@
 # Local originals and optional metadata never enter Git or the public site.
-照片/*
-!照片/README.md
-资料/
-网站/node_modules/
-网站/dist/
-网站/.astro/
-网站/work/
-网站/.local/
+photos/*
+!photos/README.md
+private/
+website/node_modules/
+website/dist/
+website/.astro/
+website/work/
+website/.local/
 .DS_Store
 .env*
 !.env.example

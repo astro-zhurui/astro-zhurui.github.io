@@ -1,0 +1,86 @@
+---
+import { publications, type PublicationRecord } from '../data/publications';
+import { text, type Lang } from '../data/i18n';
+const {
+  lang,
+  full = false,
+  publication = publications.find((paper) => paper.id === 'qhsc')!,
+} = Astro.props as { lang: Lang; full?: boolean; publication?: PublicationRecord };
+const p = publication;
+const t = text[lang];
+---
+
+<article
+  class:list={['publication', { 'publication-full': full }]}
+  id={`publication-${p.id}`}
+  data-doi={p.doi}
+>
+  <div class="publication-meta">
+    <span class="eyebrow">
+      {p.year} · {p.reference}
+    </span>
+    <span class="publication-status">
+      {p.authors[0] === 'Rui Zhu' ? t.firstAuthor : t.coAuthor}
+    </span>
+  </div>
+  <h3 lang="en">
+    <a href={p.url} target="_blank" rel="noopener noreferrer">
+      {p.title}
+    </a>
+  </h3>
+  <p class="authors" lang="en">
+    {p.authors.map((author, index) => (
+      <Fragment>
+        {index > 0 && ', '}
+        {author === 'Rui Zhu' ? <strong>{author}</strong> : author}
+      </Fragment>
+    ))}
+  </p>
+  {p.summary && <p class="publication-summary">{p.summary[lang]}</p>}
+  <div class="link-row">
+    <a class="text-link" href={p.url} target="_blank" rel="noopener noreferrer">
+      {t.paper}
+    </a>
+    {p.arxiv && (
+      <a class="text-link" href={p.arxiv} target="_blank" rel="noopener noreferrer">
+        {t.preprint}
+      </a>
+    )}
+    {p.catalog && (
+      <a class="text-link" href={p.catalog} target="_blank" rel="noopener noreferrer">
+        {t.data}
+      </a>
+    )}
+  </div>
+  {full && (
+    <details class="citation">
+      <summary>{lang === 'en' ? 'Citation / BibTeX' : 'BibTeX'}</summary>
+      <pre><code data-bibtex>{p.bibtex}</code></pre>
+      <button
+        class="button small"
+        data-copy-citation
+        data-success={t.copied}
+        data-failure={t.copyFailed}
+      >
+        {t.copy}
+      </button>
+      <p data-copy-status class="muted" role="status"></p>
+    </details>
+  )}
+</article>
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-copy-citation]').forEach((button) =>
+    button.addEventListener('click', async () => {
+      const article = button.closest('.publication')!;
+      const status = article.querySelector('[data-copy-status]')!;
+      try {
+        await navigator.clipboard.writeText(
+          article.querySelector('[data-bibtex]')?.textContent ?? '',
+        );
+        status.textContent = button.dataset.success ?? 'Copied';
+      } catch {
+        status.textContent = button.dataset.failure ?? 'Please copy the text above.';
+      }
+    }),
+  );
+</script>

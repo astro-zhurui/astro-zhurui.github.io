@@ -1,0 +1,333 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import '../../styles/gallery.css';
+import { photos } from '../../data/photography';
+import { text, languages, type Lang } from '../../data/i18n';
+export function getStaticPaths() {
+  return languages.map((lang) => ({ params: { lang } }));
+}
+const lang = Astro.params.lang as Lang;
+const t = text[lang];
+const edgeWidth = (photo: (typeof photos)[number]) =>
+  photo.height > photo.width ? 'var(--portrait-width)' : 'var(--landscape-width)';
+---
+
+<Layout lang={lang} page="photography" title={t.photography} description={t.photoDescription}>
+  <section class="page-heading container photography-heading">
+    <h1>{t.photography}</h1>
+    <p>{t.photoIntro}</p>
+  </section>
+  {photos.length > 0 ? (
+    <section
+      class="gallery-stage"
+      aria-label={t.photography}
+      aria-roledescription={lang === 'zh' ? '画廊' : 'carousel'}
+    >
+      <div
+        class="photo-gallery"
+        id="photo-gallery"
+        tabindex="0"
+        role="region"
+        aria-label={t.galleryHint}
+        style={`--first-card:${edgeWidth(photos[0])};--last-card:${edgeWidth(photos[photos.length - 1])};`}
+      >
+        {photos.map((photo, index) => (
+          <figure
+            class:list={['photo-card', { 'photo-portrait': photo.height > photo.width }]}
+            id={`photo-${photo.id}`}
+          >
+            <button
+              class="photo-open"
+              data-photo-index={index}
+              aria-label={
+                lang === 'zh' ? `放大查看第 ${index + 1} 张照片` : `Enlarge photograph ${index + 1}`
+              }
+            >
+              <img
+                src={photo.thumb}
+                srcset={photo.sources.map((source) => `${source.src} ${source.width}w`).join(', ')}
+                sizes={
+                  photo.height > photo.width
+                    ? '(max-width:720px) calc(100vw - 80px), (max-width:1100px) 44vw, 480px'
+                    : '(max-width:720px) calc(100vw - 80px), (max-width:1200px) 72vw, 860px'
+                }
+                width={photo.width}
+                height={photo.height}
+                alt={
+                  photo.description[lang] ||
+                  (lang === 'zh' ? `摄影作品 ${index + 1}` : `Photograph ${index + 1}`)
+                }
+                loading={index === 0 ? 'eager' : 'lazy'}
+                decoding="async"
+                draggable="false"
+              />
+            </button>
+          </figure>
+        ))}
+      </div>
+      <div class="gallery-controls container" hidden>
+        <button
+          class="gallery-step"
+          id="gallery-prev"
+          aria-label={t.prev}
+          aria-controls="photo-gallery"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m14 5-7 7 7 7" />
+          </svg>
+        </button>
+        <span id="gallery-position" aria-live="polite" aria-atomic="true">
+          1 / {photos.length}
+        </span>
+        <button
+          class="gallery-step"
+          id="gallery-next"
+          aria-label={t.next}
+          aria-controls="photo-gallery"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m10 5 7 7-7 7" />
+          </svg>
+        </button>
+      </div>
+      <p class="gallery-hint">{t.galleryHint}</p>
+    </section>
+  ) : (
+    <section class="container gallery-empty">
+      <h2>{t.coming}</h2>
+      <p>{t.emptyPhotos}</p>
+    </section>
+  )}
+  {photos.length > 0 && (
+    <>
+      <script
+        type="application/json"
+        id="photo-data"
+        set:html={JSON.stringify(photos).replace(/</g, '\\u003c')}
+      />
+      <dialog
+        id="lightbox"
+        aria-label={t.photography}
+        data-loading={t.imageLoading}
+        data-error={t.imageError}
+      >
+        <div class="lightbox-toolbar">
+          <span id="photo-position"></span>
+          <button class="viewer-button" id="lightbox-close" aria-label={t.close}>
+            {t.close}
+          </button>
+        </div>
+        <div class="lightbox-image-wrap">
+          <img id="lightbox-image" alt="" />
+          <p id="image-status" role="status"></p>
+        </div>
+        <div class="lightbox-bottom">
+          <button class="viewer-button" id="photo-prev" aria-label={t.prev}>
+            {lang === 'zh' ? '上一张' : 'Previous'}
+          </button>
+          <h2 id="photo-title" hidden></h2>
+          <button class="viewer-button" id="photo-next" aria-label={t.next}>
+            {lang === 'zh' ? '下一张' : 'Next'}
+          </button>
+        </div>
+      </dialog>
+    </>
+  )}
+</Layout>
+<script>
+  import type { Photo } from '../../data/photography';
+  const track = document.querySelector<HTMLElement>('#photo-gallery');
+  if (track) {
+    const cards = [...track.querySelectorAll<HTMLElement>('.photo-card')];
+    const previous = document.querySelector<HTMLButtonElement>('#gallery-prev')!;
+    const next = document.querySelector<HTMLButtonElement>('#gallery-next')!;
+    const position = document.querySelector<HTMLElement>('#gallery-position')!;
+    const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
+    let active = 0;
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const center = track.getBoundingClientRect().left + track.clientWidth / 2;
+      let nearest = Infinity;
+      cards.forEach((card, index) => {
+        const distance =
+          (card.getBoundingClientRect().left + card.offsetWidth / 2 - center) / track.clientWidth;
+        if (Math.abs(distance) < nearest) {
+          nearest = Math.abs(distance);
+          active = index;
+        }
+        card.style.setProperty(
+          '--angle',
+          `${reduceMotion.matches ? 0 : Math.max(-42, Math.min(42, -distance * 58))}deg`,
+        );
+        card.style.setProperty(
+          '--scale',
+          String(reduceMotion.matches ? 1 : 1 - Math.min(Math.abs(distance), 1) * 0.23),
+        );
+        card.style.setProperty(
+          '--fade',
+          String(reduceMotion.matches ? 1 : 1 - Math.min(Math.abs(distance), 1) * 0.28),
+        );
+      });
+      position.textContent = `${active + 1} / ${cards.length}`;
+      previous.disabled = active === 0;
+      next.disabled = active === cards.length - 1;
+      track.dataset.active = String(active);
+    };
+    const select = (index: number) =>
+      cards[Math.max(0, Math.min(cards.length - 1, index))].scrollIntoView({
+        block: 'nearest',
+        inline: 'center',
+        behavior: reduceMotion.matches ? 'instant' : 'smooth',
+      });
+    track.addEventListener(
+      'scroll',
+      () => {
+        if (!frame) frame = requestAnimationFrame(update);
+      },
+      { passive: true },
+    );
+    new ResizeObserver(update).observe(track);
+    reduceMotion.addEventListener('change', update);
+    previous.addEventListener('click', () => select(active - 1));
+    next.addEventListener('click', () => select(active + 1));
+    track.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
+        event.preventDefault();
+        select(active + (event.key === 'ArrowRight' ? 1 : -1));
+      }
+    });
+    track.addEventListener(
+      'wheel',
+      (event) => {
+        if (event.ctrlKey || Math.abs(event.deltaX) > Math.abs(event.deltaY)) return;
+        const canScroll =
+          event.deltaY > 0
+            ? track.scrollLeft < track.scrollWidth - track.clientWidth - 1
+            : track.scrollLeft > 1;
+        if (canScroll) {
+          event.preventDefault();
+          track.scrollLeft += event.deltaY;
+        }
+      },
+      { passive: false },
+    );
+    let drag: { x: number; left: number } | null = null;
+    let dragged = false;
+    track.addEventListener('pointerdown', (event) => {
+      if (event.pointerType === 'mouse' && event.button === 0) {
+        drag = { x: event.clientX, left: track.scrollLeft };
+        dragged = false;
+      }
+    });
+    track.addEventListener('pointermove', (event) => {
+      if (!drag) return;
+      const delta = event.clientX - drag.x;
+      if (Math.abs(delta) > 6) {
+        dragged = true;
+        track.setPointerCapture(event.pointerId);
+        track.style.scrollSnapType = 'none';
+        track.dataset.dragging = 'true';
+        track.scrollLeft = drag.left - delta;
+      }
+    });
+    const endDrag = (event: PointerEvent) => {
+      if (!drag) return;
+      drag = null;
+      if (track.hasPointerCapture(event.pointerId)) track.releasePointerCapture(event.pointerId);
+      track.style.scrollSnapType = '';
+      delete track.dataset.dragging;
+      if (dragged) {
+        update();
+        select(active);
+        setTimeout(() => {
+          dragged = false;
+        }, 0);
+      }
+    };
+    track.addEventListener('pointerup', endDrag);
+    track.addEventListener('pointercancel', endDrag);
+    track.addEventListener(
+      'click',
+      (event) => {
+        if (dragged) {
+          event.preventDefault();
+          event.stopImmediatePropagation();
+        }
+      },
+      true,
+    );
+    document.querySelector<HTMLElement>('.gallery-controls')!.hidden = false;
+    const hashCard = cards.find((card) => `#${card.id}` === location.hash);
+    if (hashCard)
+      hashCard.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'instant' });
+    update();
+  }
+  const dataElement = document.querySelector('#photo-data');
+  const dialog = document.querySelector<HTMLDialogElement>('#lightbox');
+  if (dataElement && dialog) {
+    const photos: Photo[] = JSON.parse(dataElement.textContent ?? '[]');
+    const lang = document.body.dataset.language === 'zh' ? 'zh' : 'en';
+    const image = document.querySelector<HTMLImageElement>('#lightbox-image')!;
+    const status = document.querySelector<HTMLElement>('#image-status')!;
+    let current = 0;
+    let opener: HTMLElement | null = null;
+    let savedScroll = 0;
+    const show = (index: number) => {
+      current = (index + photos.length) % photos.length;
+      const photo = photos[current];
+      document.querySelector('#photo-position')!.textContent = `${current + 1} / ${photos.length}`;
+      document.querySelector('#photo-title')!.textContent = photo.title[lang];
+      image.alt =
+        photo.description[lang] ||
+        (lang === 'zh' ? `摄影作品 ${current + 1}` : `Photograph ${current + 1}`);
+      image.style.opacity = '0';
+      status.textContent = dialog.dataset.loading ?? '';
+      image.onload = () => {
+        image.style.opacity = '1';
+        status.textContent = '';
+      };
+      image.onerror = () => {
+        status.textContent = dialog.dataset.error ?? '';
+      };
+      image.src = photo.large;
+      for (const id of ['photo-prev', 'photo-next'])
+        document.querySelector<HTMLButtonElement>(`#${id}`)!.disabled = photos.length < 2;
+    };
+    document.querySelectorAll<HTMLButtonElement>('[data-photo-index]').forEach((button) =>
+      button.addEventListener('click', () => {
+        opener = button;
+        savedScroll = window.scrollY;
+        show(Number(button.dataset.photoIndex));
+        dialog.showModal();
+        document.body.style.overflow = 'hidden';
+      }),
+    );
+    dialog.addEventListener('close', () => {
+      document.body.style.overflow = '';
+      window.scrollTo({ top: savedScroll, behavior: 'instant' });
+      opener?.focus({ preventScroll: true });
+    });
+    document.querySelector('#lightbox-close')?.addEventListener('click', () => dialog.close());
+    document.querySelector('#photo-prev')?.addEventListener('click', () => show(current - 1));
+    document.querySelector('#photo-next')?.addEventListener('click', () => show(current + 1));
+    dialog.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+        event.preventDefault();
+        show(current + (event.key === 'ArrowLeft' ? -1 : 1));
+      }
+    });
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) {
+        const r = dialog.getBoundingClientRect();
+        if (
+          event.clientX < r.left ||
+          event.clientX > r.right ||
+          event.clientY < r.top ||
+          event.clientY > r.bottom
+        )
+          dialog.close();
+      }
+    });
+  }
+</script>
