@@ -11,7 +11,7 @@ export const profile = {
   orcid: 'https://orcid.org/0000-0002-0792-2353',
   cv: { en: null as string | null, zh: null as string | null },
   interests: [
-    { en: 'Quasar surveys & selection', zh: '类星体巡天与筛选' },
+    { en: 'Quasar selection', zh: '类星体选源' },
     { en: 'Photometric redshifts', zh: '测光红移估计' },
     { en: 'Machine learning in astronomy', zh: '天文学中的机器学习' },
   ],
