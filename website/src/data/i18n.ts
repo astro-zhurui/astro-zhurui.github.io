@@ -124,7 +124,7 @@ export const text = {
     contactIntro: '欢迎就研究问题与学术合作交流。',
     cv: '下载简历',
     links: '学术主页',
-    copyright: '朱睿。保留所有权利。',
+    copyright: 'Rui Zhu. All rights reserved.',
     noPage: '页面未找到',
     noPageText: '没有找到你要访问的页面。',
     returnHome: '返回首页',
