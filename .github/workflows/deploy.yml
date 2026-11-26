@@ -12,6 +12,8 @@ concurrency:
   cancel-in-progress: false
 jobs:
   build:
+    env:
+      PUBLIC_FXTC_WEB_URL: ${{ vars.PUBLIC_FXTC_WEB_URL }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7

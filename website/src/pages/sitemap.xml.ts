@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 export const GET: APIRoute = () => {
-  const paths = ['', 'research/', 'publications/', 'photography/', 'about/'];
+  const paths = ['', 'research/', 'publications/', 'photography/', 'fxtc/', 'about/'];
   const urls = ['en', 'zh'].flatMap((lang) =>
     paths.map((path) => `<url><loc>https://astro-zhurui.github.io/${lang}/${path}</loc></url>`),
   );
