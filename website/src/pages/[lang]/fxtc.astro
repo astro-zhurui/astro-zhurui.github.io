@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { languages, type Lang } from '../../data/i18n';
+import { previewOrigin } from '../../data/fxtc-preview';
 
 export function getStaticPaths() {
   return languages.map((lang) => ({ params: { lang } }));
@@ -14,7 +15,7 @@ const description = zh
   : 'Search LS11 and Gaia DR3 for counterparts using a FITS catalogue or source coordinates.';
 let gateway: URL | undefined;
 try {
-  const candidate = new URL(import.meta.env.PUBLIC_FXTC_WEB_URL || '');
+  const candidate = new URL(import.meta.env.PUBLIC_FXTC_WEB_URL || previewOrigin);
   if (candidate.protocol === 'https:' && !candidate.username && !candidate.password) {
     gateway = candidate;
   }
@@ -29,34 +30,51 @@ try {
     <p>{description}</p>
   </section>
   <section class="container portal">
-    <div class="portal-card">
-      <h2>{zh ? '开始查询' : 'Start a query'}</h2>
-      <p>
-        {zh
-          ? '用已获授权的邮箱登录。提交后可在网页查看进度，并下载结果 ZIP。'
-          : 'Sign in with an approved email address to submit a task, follow its progress, and download the result ZIP.'}
-      </p>
-      <div class="portal-actions">
-        {
-          gateway ? (
-            <a class="button primary" href={gateway.href}>
-              {zh ? '打开查询页' : 'Open the query portal'}
-            </a>
-          ) : (
-            <p>{zh ? '网页查询暂未开放。' : 'Web queries are not open yet.'}</p>
-          )
-        }
-        <a class="text-link" href={`/${lang}/about/`}>
-          {zh ? '联系朱睿' : 'Contact Rui Zhu'}
-        </a>
-      </div>
-    </div>
+    {
+      gateway ? (
+        <iframe
+          title={title}
+          data-fxtc-panel
+          src={new URL('/?embed=1', gateway).href}
+          sandbox="allow-scripts allow-same-origin allow-forms allow-downloads"
+          referrerpolicy="no-referrer"
+        />
+      ) : (
+        <div class="portal-card">
+          <h2>{zh ? '网页查询暂未开放' : 'Web queries are not open yet'}</h2>
+          <a class="text-link" href={`/${lang}/about/`}>
+            {zh ? '联系朱睿' : 'Contact Rui Zhu'}
+          </a>
+        </div>
+      )
+    }
   </section>
 </Layout>
+
+<script>
+  const panel = document.querySelector<HTMLIFrameElement>('[data-fxtc-panel]');
+  if (panel) {
+    const origin = new URL(panel.src).origin;
+    window.addEventListener('message', (event) => {
+      if (event.origin !== origin || event.source !== panel.contentWindow) return;
+      const height = event.data?.fxtcHeight;
+      if (typeof height === 'number' && Number.isFinite(height)) {
+        panel.style.height = Math.min(2400, Math.max(300, Math.ceil(height))) + 'px';
+      }
+    });
+  }
+</script>
 
 <style>
   .portal {
     margin-block-end: 4rem;
+  }
+  iframe {
+    display: block;
+    inline-size: 100%;
+    max-inline-size: 46rem;
+    height: 37rem;
+    border: 0;
   }
   .portal-card {
     max-inline-size: 46rem;
@@ -67,17 +85,5 @@ try {
   }
   .portal-card h2 {
     margin-block-start: 0;
-  }
-  .portal-actions {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.8rem 1.25rem;
-  }
-  @media (max-width: 34rem) {
-    .portal-actions {
-      align-items: flex-start;
-      flex-direction: column;
-    }
   }
 </style>
