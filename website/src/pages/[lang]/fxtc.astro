@@ -9,6 +9,7 @@ export function getStaticPaths() {
 
 const lang = Astro.params.lang as Lang;
 const zh = lang === 'zh';
+const panelPath = `/?embed=1&lang=${lang}&v=2`;
 const title = zh ? 'FXTC 对应体查询' : 'FXTC counterpart query';
 const description = zh
   ? '用 FITS 星表或单源坐标查询 LS11 和 Gaia DR3 对应体。'
@@ -25,9 +26,15 @@ try {
 ---
 
 <Layout lang={lang} page="fxtc" title={title} description={description}>
-  <section class="page-heading container">
-    <h1>{title}</h1>
-    <p>{description}</p>
+  <section class="container fxtc-header">
+    <div class="fxtc-hero">
+      <div>
+        <p class="survey">EP–FXT · LS11 &amp; Gaia DR3</p>
+        <h1>{title}</h1>
+        <p class="intro-copy">{description}</p>
+      </div>
+      <img src="/icons/fxtc-logo.png" alt="FXTC" width="150" height="150" />
+    </div>
   </section>
   <section class="container portal">
     {
@@ -35,8 +42,8 @@ try {
         <iframe
           title={title}
           data-fxtc-panel
-          src={new URL('/?embed=1', gateway).href}
-          sandbox="allow-scripts allow-same-origin allow-forms allow-downloads"
+          src={new URL(panelPath, gateway).href}
+          sandbox="allow-scripts allow-same-origin allow-forms allow-downloads allow-popups allow-popups-to-escape-sandbox"
           referrerpolicy="no-referrer"
         />
       ) : (
@@ -66,13 +73,49 @@ try {
 </script>
 
 <style>
+  .fxtc-header {
+    padding-block-start: clamp(1.6rem, 5vw, 4rem);
+  }
+  .fxtc-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: clamp(1rem, 4vw, 3.5rem);
+    padding: clamp(1.3rem, 4.7vw, 3.8rem);
+    color: #172640;
+    background: linear-gradient(115deg, #fcfdff 31%, #e7eff9 100%);
+    border: 1px solid #d8e3f0;
+    border-radius: 1.35rem;
+  }
+  .fxtc-hero h1 {
+    margin: .2em 0 .25em;
+    color: inherit;
+    line-height: 1.06;
+    font-size: clamp(2.05rem, 5vw, 4.55rem);
+    letter-spacing: -.055em;
+  }
+  .fxtc-hero .survey {
+    color: #4a5e78;
+    font-weight: 700;
+    font-size: .875rem;
+    letter-spacing: .1em;
+  }
+  .intro-copy {
+    color: #435973;
+    font-size: clamp(1rem, 2vw, 1.19rem);
+    max-width: 34rem;
+  }
+  .fxtc-hero img {
+    display: block;
+    inline-size: clamp(4.2rem, 19vw, 9.4rem);
+    block-size: auto;
+  }
   .portal {
-    margin-block-end: 4rem;
+    margin-block: 1.25rem 4rem;
   }
   iframe {
     display: block;
     inline-size: 100%;
-    max-inline-size: 46rem;
     height: 37rem;
     border: 0;
   }
@@ -85,5 +128,13 @@ try {
   }
   .portal-card h2 {
     margin-block-start: 0;
+  }
+  @media (max-width: 500px) {
+    .fxtc-hero {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .fxtc-hero img {
+      grid-row: 1;
+    }
   }
 </style>

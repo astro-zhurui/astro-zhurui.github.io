@@ -18,6 +18,7 @@ const canonical =
     : `https://astro-zhurui.github.io/${lang}/${section}`;
 const nav = ['home', 'research', 'publications', 'photography', 'fxtc', 'about'] as const;
 const otherLang = lang === 'en' ? 'zh' : 'en';
+const englishFxtc = lang === 'en' && page === 'fxtc';
 const name = lang === 'en' ? 'Rui Zhu' : '朱睿';
 const pageTitle = title
   ? `${title} · ${name}`
@@ -59,7 +60,7 @@ const pageTitle = title
       <div class="container header-inner">
         <a class="wordmark" href={`/${lang}/`} aria-label={name + ' · ' + t.home}>
           <span class="wordmark-name">{profile.name[lang]}</span>
-          <span class="wordmark-secondary">{profile.name[otherLang]}</span>
+          {!englishFxtc && <span class="wordmark-secondary">{profile.name[otherLang]}</span>}
         </a>
         <nav class="desktop-nav" aria-label={lang === 'zh' ? '主导航' : 'Main navigation'}>
           {nav.map((item) => (
@@ -77,9 +78,9 @@ const pageTitle = title
             data-language-switch
             href={`/${otherLang}/${section}`}
             lang={otherLang === 'zh' ? 'zh-CN' : 'en'}
-            aria-label={otherLang === 'zh' ? '切换到中文' : 'Switch to English'}
+            aria-label={englishFxtc ? 'Switch to Chinese' : otherLang === 'zh' ? '切换到中文' : 'Switch to English'}
           >
-            {otherLang === 'zh' ? '中文' : 'EN'}
+            {englishFxtc ? 'ZH' : otherLang === 'zh' ? '中文' : 'EN'}
           </a>
           <button
             class="menu-toggle"
@@ -112,7 +113,7 @@ const pageTitle = title
     </main>
     <footer class="site-footer container">
       <a class="footer-name" href={`/${lang}/`}>
-        Rui Zhu <span>朱睿</span>
+        Rui Zhu {!englishFxtc && <span>朱睿</span>}
       </a>
       <div class="footer-links">
         <a href={profile.orcid} target="_blank" rel="noopener noreferrer">
