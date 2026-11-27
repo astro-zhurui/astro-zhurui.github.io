@@ -5,7 +5,7 @@ import { previewOrigin } from '../data/fxtc-preview';
 const panelPath = '/?embed=1&lang=en&v=2';
 const title = 'FXTC Counterpart Query Service';
 const description =
-  'Find candidate optical counterparts to EP–FXT and other X-ray sources in LS11 and Gaia DR3 using the FXTC-DR1 matching method.';
+  'Find candidate optical counterparts to EP–FXT and other X-ray sources in LS11 and Gaia DR3 using NWAY with machine-learned priors.';
 let gateway: URL | undefined;
 try {
   const candidate = new URL(import.meta.env.PUBLIC_FXTC_WEB_URL || previewOrigin);
