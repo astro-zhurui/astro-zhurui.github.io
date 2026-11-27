@@ -1,19 +1,11 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import { languages, type Lang } from '../../data/i18n';
-import { previewOrigin } from '../../data/fxtc-preview';
+import Layout from '../layouts/Layout.astro';
+import { previewOrigin } from '../data/fxtc-preview';
 
-export function getStaticPaths() {
-  return languages.map((lang) => ({ params: { lang } }));
-}
-
-const lang = Astro.params.lang as Lang;
-const zh = lang === 'zh';
-const panelPath = `/?embed=1&lang=${lang}&v=2`;
-const title = zh ? 'FXTC 对应体查询' : 'FXTC counterpart query';
-const description = zh
-  ? '用 FITS 星表或单源坐标查询 LS11 和 Gaia DR3 对应体。'
-  : 'Search LS11 and Gaia DR3 for counterparts using a FITS catalogue or source coordinates.';
+const panelPath = '/?embed=1&lang=en&v=2';
+const title = 'FXTC counterpart query';
+const description =
+  'Search LS11 and Gaia DR3 for counterparts using a FITS catalogue or source coordinates.';
 let gateway: URL | undefined;
 try {
   const candidate = new URL(import.meta.env.PUBLIC_FXTC_WEB_URL || previewOrigin);
@@ -25,7 +17,7 @@ try {
 }
 ---
 
-<Layout lang={lang} page="fxtc" title={title} description={description}>
+<Layout lang="en" page="fxtc" title={title} description={description}>
   <section class="container fxtc-header">
     <div class="fxtc-hero">
       <div>
@@ -48,10 +40,8 @@ try {
         />
       ) : (
         <div class="portal-card">
-          <h2>{zh ? '网页查询暂未开放' : 'Web queries are not open yet'}</h2>
-          <a class="text-link" href={`/${lang}/about/`}>
-            {zh ? '联系朱睿' : 'Contact Rui Zhu'}
-          </a>
+          <h2>Web queries are not open yet</h2>
+          <a class="text-link" href="/en/about/">Contact Rui Zhu</a>
         </div>
       )
     }

@@ -11,14 +11,16 @@ interface Props {
 }
 const { lang, page, title, description } = Astro.props;
 const t = text[lang];
+const englishFxtc = page === 'fxtc';
 const section = page === 'home' || page === '404' ? '' : `${page}/`;
 const canonical =
   page === '404'
     ? 'https://astro-zhurui.github.io/404.html'
-    : `https://astro-zhurui.github.io/${lang}/${section}`;
+    : englishFxtc
+      ? 'https://astro-zhurui.github.io/fxtc/'
+      : `https://astro-zhurui.github.io/${lang}/${section}`;
 const nav = ['home', 'research', 'publications', 'photography', 'fxtc', 'about'] as const;
 const otherLang = lang === 'en' ? 'zh' : 'en';
-const englishFxtc = lang === 'en' && page === 'fxtc';
 const name = lang === 'en' ? 'Rui Zhu' : '朱睿';
 const pageTitle = title
   ? `${title} · ${name}`
@@ -39,13 +41,17 @@ const pageTitle = title
     <link rel="icon" href="/icons/rz.svg" type="image/svg+xml" sizes="any" />
     <link rel="apple-touch-icon" href="/icons/apple-touch-rz.png" sizes="180x180" />
     <link rel="canonical" href={canonical} />
-    <link rel="alternate" hreflang="en" href={`https://astro-zhurui.github.io/en/${section}`} />
-    <link rel="alternate" hreflang="zh-CN" href={`https://astro-zhurui.github.io/zh/${section}`} />
-    <link
-      rel="alternate"
-      hreflang="x-default"
-      href={`https://astro-zhurui.github.io/en/${section}`}
-    />
+    {!englishFxtc && (
+      <>
+        <link rel="alternate" hreflang="en" href={`https://astro-zhurui.github.io/en/${section}`} />
+        <link rel="alternate" hreflang="zh-CN" href={`https://astro-zhurui.github.io/zh/${section}`} />
+        <link
+          rel="alternate"
+          hreflang="x-default"
+          href={`https://astro-zhurui.github.io/en/${section}`}
+        />
+      </>
+    )}
     <meta property="og:type" content="website" />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description ?? profile.biography[lang]} />
@@ -65,7 +71,7 @@ const pageTitle = title
         <nav class="desktop-nav" aria-label={lang === 'zh' ? '主导航' : 'Main navigation'}>
           {nav.map((item) => (
             <a
-              href={`/${lang}/${item === 'home' ? '' : item + '/'}`}
+              href={item === 'fxtc' ? '/fxtc/' : `/${lang}/${item === 'home' ? '' : item + '/'}`}
               aria-current={page === item ? 'page' : undefined}
             >
               {t[item]}
@@ -73,15 +79,17 @@ const pageTitle = title
           ))}
         </nav>
         <div class="header-controls">
-          <a
-            class="language-switch"
-            data-language-switch
-            href={`/${otherLang}/${section}`}
-            lang={otherLang === 'zh' ? 'zh-CN' : 'en'}
-            aria-label={englishFxtc ? 'Switch to Chinese' : otherLang === 'zh' ? '切换到中文' : 'Switch to English'}
-          >
-            {englishFxtc ? 'ZH' : otherLang === 'zh' ? '中文' : 'EN'}
-          </a>
+          {!englishFxtc && (
+            <a
+              class="language-switch"
+              data-language-switch
+              href={`/${otherLang}/${section}`}
+              lang={otherLang === 'zh' ? 'zh-CN' : 'en'}
+              aria-label={otherLang === 'zh' ? '切换到中文' : 'Switch to English'}
+            >
+              {otherLang === 'zh' ? '中文' : 'EN'}
+            </a>
+          )}
           <button
             class="menu-toggle"
             aria-expanded="false"
@@ -100,7 +108,7 @@ const pageTitle = title
       >
         {nav.map((item) => (
           <a
-            href={`/${lang}/${item === 'home' ? '' : item + '/'}`}
+            href={item === 'fxtc' ? '/fxtc/' : `/${lang}/${item === 'home' ? '' : item + '/'}`}
             aria-current={page === item ? 'page' : undefined}
           >
             {t[item]}

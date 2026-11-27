@@ -15,6 +15,7 @@ await walk(dist);
 const expected = [
   'index.html',
   '404.html',
+  'fxtc/index.html',
   ...['en', 'zh'].flatMap((lang) =>
     ['', 'research/', 'publications/', 'photography/', 'about/'].map(
       (page) => `${lang}/${page}index.html`,

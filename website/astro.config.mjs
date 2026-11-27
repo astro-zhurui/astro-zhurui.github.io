@@ -6,6 +6,7 @@ export default defineConfig({
   outDir: './.local/build',
   cacheDir: './.local/cache',
   trailingSlash: 'always',
+  redirects: { '/en/fxtc/': '/fxtc/', '/zh/fxtc/': '/fxtc/' },
   build: { format: 'directory' },
   server: { port: 4321 },
 });
