@@ -5,7 +5,7 @@ import { previewOrigin } from '../data/fxtc-preview';
 const panelPath = '/?embed=1&lang=en&v=2';
 const title = 'FXTC Counterpart Query Service';
 const description =
-  'Find candidate optical counterparts to EP–FXT and other X-ray sources in Legacy Surveys DR11 (LS11) and Gaia DR3.';
+  'Find candidate optical counterparts to EP–FXT and other X-ray sources in LS11 and Gaia DR3 using the FXTC-DR1 matching method.';
 let gateway: URL | undefined;
 try {
   const candidate = new URL(import.meta.env.PUBLIC_FXTC_WEB_URL || previewOrigin);
@@ -23,14 +23,7 @@ try {
       <div class="intro">
         <h1>{title}</h1>
         <p class="lead">{description}</p>
-        <p>
-          Following FXTC-DR1, NWAY matches each catalog separately, combining positional evidence
-          with priors learned from known X-ray counterparts and nearby field objects.
-        </p>
-        <p>
-          Upload a FITS catalog or enter one source position and its uncertainty. The results
-          include candidate matches and their probabilities in FITS tables.
-        </p>
+        <p>Upload a FITS catalog or enter a source position and its uncertainty.</p>
       </div>
       <img src="/icons/fxtc-logo.png" alt="" width="124" height="124" />
     </header>
